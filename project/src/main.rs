@@ -2,9 +2,44 @@ use std::env;
 use std::fs;
 use std::process;
 use std::error::Error;
+use std::io;
 
+fn calculate_length_using_addr(s: &String) -> usize {
+    s.len()
+}
+
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len(); // len() returns the length of a String
+    (s, length)
+}
+
+fn insert_str_front(s: &mut String, input_str: String){
+    s.insert_str(0, &input_str,)
+}
+
+fn gives_ownership() -> String {             // gives_ownership will move its
+let some_string = String::from("yours"); // some_string comes into scope
+some_string                              // some_string is returned and
+}
 
 fn main() {
+
+    let mut input_str = String::new();
+    io::stdin().read_line(&mut input_str)
+            .expect("Failed to read line");
+    let (s2, len) = calculate_length(input_str);
+    println!("String :{} Length: {}", s2, len);
+
+    let s = gives_ownership();
+    println!("s:{}", s);
+    //Rust guarantees memory safety with a feature called ownership.  ** Rust borrow checker
+    let mut s1 = String::from("abc");
+    println!("S1:{}", s1);
+    let str_hi= String::from("Hi");
+    insert_str_front(&mut s1, str_hi);
+    println!("After Insertion S1:{}", s1);
+
+
     println!("Testing App");
     let args: Vec<String> = env::args().collect();
     println!("{:?}", args);
@@ -73,7 +108,9 @@ impl Config {
 
 // Rust Ownership
 // Stack and Heap.
-
+pub fn testing_ownership(){
+    
+}
 // Smart Pointer.
 
 // Reference and Borrowing.
