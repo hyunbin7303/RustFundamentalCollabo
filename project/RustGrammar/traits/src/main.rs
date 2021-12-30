@@ -108,7 +108,9 @@ impl<T> Pair<T> {
         Self {x,y}
     }
 } 
-
+impl<T: Display + PartialOrd> Pair<T> {
+    
+}
 fn main() {
   let movie1 = Movie{
       title: "Titanic".to_string(),
