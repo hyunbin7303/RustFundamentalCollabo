@@ -90,7 +90,6 @@ impl Config {
 
 
 //https://images.cafonline.com/image/upload/caf-dev/wlwor80q15xpomqeqxjm.pdf
-//https://crates.io/
 //https://www.youtube.com/watch?v=OkmZc_H0NNo&list=PL7r-PXl6ZPcB4jn1_VR3D8tSK9DxOaiQE&index=3
 //https://www.youtube.com/watch?v=alzJsaOuUF8
 

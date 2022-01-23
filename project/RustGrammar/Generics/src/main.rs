@@ -12,8 +12,19 @@
 //     println!("Hello, world!");
 //     let int_origin = Point { x: 0, y: 0 };
 //     let float_origin = Point { x: 0.0, y: 0.0 };
-
 // }
+
+
+enum Option<T> {
+    Some(T),
+    None,
+}
+enum Result<T,E>{
+    Ok(T),
+    Err(E),
+}
+// The Result enum is generic over two types, T and E, and has two variants: Ok,
+// which holds a value of type T, and Err, which holds a value of type E.
 
 
 fn largest_i32(list: &[i32]) -> i32 {
@@ -51,3 +62,5 @@ fn main() {
     let result = largest_char(&char_list);
     println!("The largest char is {}", result);
 }
+
+

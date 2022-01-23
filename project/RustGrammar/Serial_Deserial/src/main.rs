@@ -11,8 +11,6 @@ struct PersonalDetails {
     last_name: String,
     primary_address: i32
 }
-
-
 #[derive(Deserialize, Debug)]
 #[serde(rename_all="camelCase")]
 struct BusinessDetails {
