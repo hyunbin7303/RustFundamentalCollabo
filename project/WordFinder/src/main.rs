@@ -3,36 +3,48 @@ use std::io::prelude::*;
 use std::io::{Write,BufReader, BufRead, Error, ErrorKind};
 use same_file::Handle;
 use std::path::Path;
+use std::fmt::Display;
 use std::env::args;
 //TODO
-//1. Read file and parse it by / or | 
-//2. Find the specific word from the array
-//3. Generate the random number and store it into the text file.
-//4. Use Different types of Collection 
-//5. Send the data through the nextwork? 
-// -------------------------------------------
-
-// Use the argument parsing as well. 
-//https://doc.rust-lang.org/book/ch12-03-improving-error-handling-and-modularity.html
-
-// merge testApp to this one. 
-// how to use closure in this application? 
-
+//1. Command line : Search for the specific word in the text file/json file.
+// Word counts, How many words in the txt file?
+// Based on the input file from the config file? // How to work on using the txt file.????
+//2. How to use trait in this Rust file?????
+// Use Closure at least once????????????
 // Use Fn : Itcannot modify the objects it captures
 // Use FnMut : It can modify the objects it captures
 // Use FnOnce : The most restricted. Can only ba called once because when it is called it consumes
 // itself and its captures.
 
 
-struct Cli {
-    pattern: String,
-    path: std::path::PathBuf,
+// These are just an idea.
+//1. Sentence finder. Find the all sentense that uses the specific word.
+//2. Read json file of the dictionary.
+//3. COnfigure with my ENglish sentence..... The sentence i use, it should be stored in the text file.
+
+// Use the argument parsing as well. 
+//https://doc.rust-lang.org/book/ch12-03-improving-error-handling-and-modularity.html
+
+// Use Function/ FnONce, 
+//https://stackoverflow.com/questions/36390665/how-do-you-pass-a-rust-function-as-a-parameter
+
+
+
+#[derive(Debug)]
+struct Word {
+    meaning: String,
+    synonym: String,
 }
-
-
+impl Default for Word {
+    fn default () -> Word {
+        Word{meaning: "".to_string(), synonym: "".to_string()}
+    }
+}
+//path: std::path::PathBuf,
 struct Config {
     query: String,
     filename: String,
+    search_word: String,
 }
 impl Config {
     fn new(args: &[String]) -> Result<Config, &str>{
@@ -41,29 +53,35 @@ impl Config {
         }
         let query = args[1].clone();
         let filename = args[2].clone();
-        Ok(Config {query, filename})
+        let search_word = args[3].clone();
+        Ok(Config {query, filename,search_word})
     }
 }
 fn parse_config(args: &[String]) -> Config {
     let query = args[1].clone();
     let filename = args[2].clone();
-    Config { query, filename}
+    let search_word= args[3].clone();
+    Config { query, filename,search_word }
 }
-
-
-
-fn whitespace_test(c: char) -> bool {
-    return c == ' ' || c == '\n';
+fn calculate_length(s: String) -> (String, usize) {
+    let length = s.len(); // len() returns the length of a String
+    (s, length)
 }
-fn find_inputword(input: &str) -> &str {
-    ""
-}
-
 fn generate_txtfile(filename: &str) -> Result<(), Error> {
     let mut s = filename.to_string();
     s.pop();
     let mut file = File::create(&s)?;
-    file.write_all(b"Hello, World! \nhow are you? my name is Kevin.")?;
+
+    // Get user input by the user.
+    let mut input_str = String::new();
+    std::io::stdin().read_line(&mut input_str)
+            .expect("Failed to read line");
+
+    insert_str_front(&mut input_str,"KEVIN PARK. Future Rust Software Developer.\n".to_string());
+
+    let (s2, len) = calculate_length(input_str);
+    println!("The length of the whole string : {}", len);
+    file.write_all(s2.as_bytes())?;
     Ok(())
 }
 fn trim_newline(s: &mut String){
@@ -101,30 +119,87 @@ fn insert_str_front(s: &mut String, input_str: String){
 fn check_file_exist(filename: &str) -> bool {
     let mut s = filename.to_string();
     s.pop();
-
     let file = std::path::Path::new(&s).exists();
     file
 }
 
 
-fn main() -> std::io::Result<()> {
+// count words 
+fn count_words(word: &str) -> i32 {
+    let mut total = 0;
+    let mut previous = char::MAX;
+    0
+}
+fn print_vec<T:Display>(input: &Vec<T>){
+    for item in input{
+        println!("{}", item);
+    }
+    println!();
+}
 
+
+#[derive(Debug)]
+struct Country { 
+    cities: Vec<City>,
+}
+#[derive(Debug)]
+struct City {
+    name : String,
+    population : u32,
+}
+impl City {
+    fn new(name: &str, population: u32) -> Self {
+        Self {
+            name : name.to_string(),
+            population
+        }
+    }
+}
+// Country::from(vec![City, City])
+impl From<Vec<City>> for Country{
+    fn from(cities: Vec<City>) -> Self {
+        Self{ cities }
+    }
+}
+impl Country {
+    fn print_cities(&self) {
+        for city in &self.cities {
+            println!("{:?} has a population of {:?}", city.name, city.population);
+        }
+    }
+}
+
+
+fn main() -> std::io::Result<()> {
+   // let str_vec = Vec::from("What the fuck is wrong with you?");
+   // print_vec(&str_vec);
+
+
+    println!("CHECKING *****************");
+    let seoul = City::new("Seoul", 10000);
+    let busan = City::new("Busan", 2000);
+    let korea_cities = vec![seoul, busan];
+    let kor = Country::from(korea_cities);
+    kor.print_cities();
+
+
+    let v: Vec<&str> = "Kevin my name is Kevin".split(|c| c == ',' || c == ' ').collect();
+    for item in v {
+        println!("ITEM TEST : {}", item);
+    }
+
+    let w1 = Word::default();
+    let x = Some("air").unwrap();
     // let input = args();
     // input.skip(1).for_each(|item| {
     //     println!("You wrote {}, which in capital letters in {}", item, item.to_uppercase());
     // });
-
     let pattern = args().nth(1).expect("No Pattern given");
-    // let args_Cli = Cli {
-    //     pattern: pattern,
-    //     path: std::path::PathBuf::from(path),
-    // };
     let args_vec : Vec<String> = args().collect();
-    let config = parse_config(&args_vec);
-    println!("Searching for {}", config.query);
+    let config = parse_config(&args_vec); 
+    println!("Action : {}", config.query);
     println!("In file : {}", config.filename);
-    // let opt: Option<String> = Some("Some value".to_owned());
-    // let value = opt.as_deref().unwrap_or("default string");
+    println!("Search word or stirng. {}", config.search_word);
 
     let mut txt_name = String::new();
     println!("Type your text file name.");
@@ -139,6 +214,9 @@ fn main() -> std::io::Result<()> {
         println!("File doesn't exist. Create file : {}", txt_name);
         generate_txtfile(&txt_name); 
     }
+
+
+
     
     // use insert_str_front 
     // And store again

@@ -1,1 +1,0 @@
-/Users/kevin/Software/KevinRust_Study/Rust_SelfDevelopment/project/RustGrammar/Generics/target/debug/Generics: /Users/kevin/Software/KevinRust_Study/Rust_SelfDevelopment/project/RustGrammar/Generics/src/main.rs

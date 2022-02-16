@@ -4,9 +4,6 @@ use std::process;
 use std::error::Error;
 use std::io;
 
-fn calculate_length_using_addr(s: &String) -> usize {
-    s.len()
-}
 
 fn calculate_length(s: String) -> (String, usize) {
     let length = s.len(); // len() returns the length of a String
@@ -40,7 +37,6 @@ fn main() {
     println!("After Insertion S1:{}", s1);
 
 
-    println!("Testing App");
     let args: Vec<String> = env::args().collect();
     println!("{:?}", args);
 
@@ -103,29 +99,3 @@ impl Config {
 //     let value = x + 20;
 //     value
 // }
-
-
-// Rust Ownership
-// Stack and Heap.
-pub fn testing_ownership(){
-    
-}
-// Smart Pointer.
-
-// Reference and Borrowing.
-
-// Expore the memory layout in GDB?
-//Explore the Ownership and Borrowing in GDB
-
-
-//Enums
-// Structs
-
-// TCP Conenctions.
-
-// Logging and incoming Requests.
-
-// Match Expressions.
-//Advanced Error handling
-
-//Iterating over strings.
