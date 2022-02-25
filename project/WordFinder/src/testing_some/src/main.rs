@@ -29,6 +29,30 @@ fn handle_option(my_options: Vec<Option<i32>>){
     }
   }
 } 
+
+
+struct StructTest{
+  a: String,
+  b: Option<String>,
+  c: Option<String>,
+  d: Option<i32>,
+  e: Option<i64>,
+  f: Option<f32>
+}
+
+// impl StructTest {
+//   fn new(a:String, b: String, c: String, d: i32, e: i64, f: f32) -> StructTest {
+//     a= "HI".to_string();
+//     b= b.to_string();
+//     c = c.to_string():
+//   };
+// }
+
+
+
+
+
+
  fn main() {
   println!("{}", get_full_name("Galileo", "Galilei", None));
   println!("{}", get_full_name("Leonardo", "Vinci", Some("Da")));
@@ -48,3 +72,9 @@ fn handle_option(my_options: Vec<Option<i32>>){
   println!("Number displays: {}", triple_ref);
 
 }
+
+
+// &str is a simple string. 
+// let my_var = "Hello" -> you create a &str. which is very fast.println!
+
+// String is a pointer, with data on the heap.println!

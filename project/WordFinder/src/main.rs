@@ -30,14 +30,24 @@ use std::env::args;
 
 
 
-#[derive(Debug)]
-struct Word {
-    meaning: String,
-    synonym: String,
+impl Sentence {
+    fn print_words(&self) {
+        for word in &self.words {
+            println!("{:?} means {:?}", word.letter, word.meaning);
+        }
+    }
 }
+
+
 impl Default for Word {
     fn default () -> Word {
-        Word{meaning: "".to_string(), synonym: "".to_string()}
+        Word{letter: "".to_string(), meaning: "".to_string(), synonym: "".to_string()}
+    }
+}
+
+impl From<Vec<Word>> for Sentence {
+    fn from(words: Vec<Word>) -> Self {
+        Self { words }
     }
 }
 //path: std::path::PathBuf,
@@ -122,8 +132,6 @@ fn check_file_exist(filename: &str) -> bool {
     let file = std::path::Path::new(&s).exists();
     file
 }
-
-
 // count words 
 fn count_words(word: &str) -> i32 {
     let mut total = 0;
@@ -136,88 +144,65 @@ fn print_vec<T:Display>(input: &Vec<T>){
     }
     println!();
 }
-
-
 #[derive(Debug)]
-struct Country { 
-    cities: Vec<City>,
+struct Sentence {
+    words: Vec<Word>,
 }
 #[derive(Debug)]
-struct City {
-    name : String,
-    population : u32,
+struct Word {
+    letter : String,
+    meaning: String,
+    synonym: String,
 }
-impl City {
-    fn new(name: &str, population: u32) -> Self {
+impl Word {
+    fn new(letter: &str, meaning: &str, synonym: &str)-> Self{
         Self {
-            name : name.to_string(),
-            population
+            letter : letter.to_string(),
+            meaning : meaning.to_string(),
+            synonym: synonym.to_string()
         }
     }
 }
-// Country::from(vec![City, City])
-impl From<Vec<City>> for Country{
-    fn from(cities: Vec<City>) -> Self {
-        Self{ cities }
-    }
-}
-impl Country {
-    fn print_cities(&self) {
-        for city in &self.cities {
-            println!("{:?} has a population of {:?}", city.name, city.population);
-        }
-    }
-}
-
 
 fn main() -> std::io::Result<()> {
-   // let str_vec = Vec::from("What the fuck is wrong with you?");
-   // print_vec(&str_vec);
-
-
-    println!("CHECKING *****************");
-    let seoul = City::new("Seoul", 10000);
-    let busan = City::new("Busan", 2000);
-    let korea_cities = vec![seoul, busan];
-    let kor = Country::from(korea_cities);
-    kor.print_cities();
-
-
-    let v: Vec<&str> = "Kevin my name is Kevin".split(|c| c == ',' || c == ' ').collect();
-    for item in v {
-        println!("ITEM TEST : {}", item);
-    }
-
     let w1 = Word::default();
     let x = Some("air").unwrap();
-    // let input = args();
-    // input.skip(1).for_each(|item| {
-    //     println!("You wrote {}, which in capital letters in {}", item, item.to_uppercase());
-    // });
+
+
     let pattern = args().nth(1).expect("No Pattern given");
     let args_vec : Vec<String> = args().collect();
     let config = parse_config(&args_vec); 
     println!("Action : {}", config.query);
-    println!("In file : {}", config.filename);
-    println!("Search word or stirng. {}", config.search_word);
 
-    let mut txt_name = String::new();
-    println!("Type your text file name.");
-    let bl = std::io::stdin().read_line(&mut txt_name).unwrap();
+    if config.query == "dictionary"{
 
-    // Checking if file exists in the directory.
-    let is_exist = check_file_exist(&txt_name);
-    if is_exist {
-        println!("File Exists!");
-        read_textfile(&txt_name); // put test.txt file in here for testing.
-    }else{
-        println!("File doesn't exist. Create file : {}", txt_name);
-        generate_txtfile(&txt_name); 
-    }
+        //get the word from the json file? 
 
-
-
+        let word_apple = Word::new("APPLE", "the round fruit of a tree of the rose family, which typically has thin red or green skin and crisp flesh. Many varieties have been developed as dessert or cooking fruit or for making cider.", "");
+        let word_upgrade = Word::new("UPGRADE","raise (something) to a higher standard, in particular improve (equipment or machinery) by adding or replacing components.", "BOOST" );
+        let words = vec![word_apple, word_upgrade];
+        let sentences = Sentence::from(words);
+        sentences.print_words();
     
+    }
+    else{
+        println!("In file : {}", config.filename);
+        println!("Search word or stirng. {}", config.search_word);
+    
+        let mut txt_name = String::new();
+        println!("Type your text file name.");
+        let bl = std::io::stdin().read_line(&mut txt_name).unwrap();
+    
+        // Checking if file exists in the directory.
+        let is_exist = check_file_exist(&txt_name);
+        if is_exist {
+            println!("File Exists!");
+            read_textfile(&txt_name); // put test.txt file in here for testing.
+        }else{
+            println!("File doesn't exist. Create file : {}", txt_name);
+            generate_txtfile(&txt_name); 
+        }
+    }
     // use insert_str_front 
     // And store again
     Ok(())

@@ -75,12 +75,26 @@ fn main() {
     let my_person = Person;
     let my_building = Building;
 
-    let hello = HelloArgs::new();
-    println!("Hello, {}!", hello.name);
+    let matches = App::new("MyApp")
+        .arg(Arg::with_name("out")
+            .long("output")
+            .required(true)
+            .takes_value(true))
+        .arg(Arg::with_name("debug")
+            .short('d')
+            .multiple(true))
+        .arg(Arg::with_name("cfg")
+            .short('c')
+            .takes_value(true))
+        .get_matches();
+
+        if let Some(c) = matches.value_of("cfg"){
+            println!("Value for -c: {}", c);
+        }
+
+//    let hello = HelloArgs::new();
+//    println!("Hello, {}!", hello.name);
 }
-
-
-
 
 #[cfg(test)]
 mod test {
