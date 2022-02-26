@@ -1,0 +1,28 @@
+
+foo:
+    - list1
+    - list2
+bar:
+    - 1
+    - 2.0
+
+
+
+api-version: v1
+
+
+
+microservice:
+  - app: user-authentication
+    port: 9000
+    version: 1.0
+    deployed: yes
+    checked: on
+  - app: kevin-store
+    port: 8000
+    version: [1.0,2.0,3.0]
+
+
+microservices:
+  - user-authentication
+  - kevin-store
