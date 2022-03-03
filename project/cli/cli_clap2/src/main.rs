@@ -4,9 +4,11 @@ extern crate clap;
 #[macro_use]
 extern crate slog;
 
+extern crate yaml_rust;
 use std::process;
-use clap::{Arg, App, load_yaml, ArgMatches, Command, Parser };
+use clap::{Arg, App, ArgMatches, Command, Parser };
 use std::ffi::OsString;
+use yaml_rust::{YamlLoader, YamlEmitter};
 
 #[derive(Parser)]
 struct Cli {
@@ -25,9 +27,8 @@ struct Cli {
 // }
 
 fn main() {
-
-    let yaml = loal_yaml!("config.yaml");
-
+    let yaml = YamlLoader::load_from_str("config.yaml").unwrap();
+    let mode_vals = ["DEV", "PROD"];
 
     let matches = Command::new("KevinApp")
         .version("1.0")
@@ -38,6 +39,12 @@ fn main() {
             .long("config")
             .help("Sets a custom config file")
             .takes_value(true))
+        .arg(Arg::new("MODE")
+            .long("MODE")
+            .help("Environemnt for this app mode.")
+            .index(1)
+            .possible_values(&mode_vals)
+            .required(true))
         .arg(Arg::new("INPUT")
             .short('i')
             .long("INPUT")
@@ -74,6 +81,16 @@ fn main() {
         ])
     .get_matches();
 
+
+    match matches.value_of("MODE").unwrap() {
+        "DEV" => {
+            println!("Dev envioronment Triggered");
+        },
+        "PROD" => {
+            println!("PROD enviornment triggered");
+        },
+        _ => unreachable!()
+    }
 
     println!("Using input file: {}", matches.value_of("INPUT").unwrap());
     let config_file = matches.value_of("CONFIG").unwrap_or("config.json");

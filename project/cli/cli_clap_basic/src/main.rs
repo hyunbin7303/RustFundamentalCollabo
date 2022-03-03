@@ -3,15 +3,42 @@ extern crate clap;
 use clap::{Arg, Command};
 
 
+#[derive(Debug)]
+struct MyAppArgs {
+
+    help: bool,
+    number: u32,
+    opt_num: Option<u32>,
+    width: u32,
+    input: Vec<std::path::PathBuf>,
+}
+
+fn is_width(s: &str) -> Result<(), String> {
+    let w: u32 = s.parse().map_err(|_| "Not a number")?;
+    if w != 0 {
+        Ok(())
+    } else {
+        Err("Width must be positive".to_string())
+    }
+}
+
 fn main() {
 
 
     let enum_checks = ["Kevin", "Adam", "Julio"];
 
+
     let matches = Command::new("MyApp")
                         .version("1.0")
                         .author("Kevin Park. <hyunbin7303@gmail.com>")
                         .about("Does awesome things")
+                        .arg(
+                            Arg::new("number")
+                            .long("number")
+                            .required(true)
+                            .help("Sets a number")
+                            .takes_value(true),
+                        )
                         .arg(Arg::new("input")
                             .help("Sets the input file to use")
                             .short('i')

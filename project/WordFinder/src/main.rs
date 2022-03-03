@@ -1,3 +1,6 @@
+use std::fs;
+use std::process;
+use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::{Write,BufReader, BufRead, Error, ErrorKind};
@@ -67,6 +70,13 @@ impl Config {
         Ok(Config {query, filename,search_word})
     }
 }
+
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let contents = fs::read_to_string(config.filename)?;
+    println!("With text : \n{}", contents);
+    Ok(())
+}
+
 fn parse_config(args: &[String]) -> Config {
     let query = args[1].clone();
     let filename = args[2].clone();
@@ -144,6 +154,11 @@ fn print_vec<T:Display>(input: &Vec<T>){
     }
     println!();
 }
+
+// fn read_file_string(filepath: &str) -> Result<String, Box<dyn std::error::Error>> {
+//     let data = fs::read_to_string(filepath);
+//     Ok(data);
+// }
 #[derive(Debug)]
 struct Sentence {
     words: Vec<Word>,
@@ -207,3 +222,4 @@ fn main() -> std::io::Result<()> {
     // And store again
     Ok(())
 }
+//https://superuser.com/questions/886132/where-is-the-zshrc-file-on-mac

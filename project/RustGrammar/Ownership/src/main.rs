@@ -44,7 +44,7 @@ mod model {
             report_item(&self.right, "right");
         }
     }
-    pub fn report_item<T: Display>(item:  &Option<T>, which: &str) {
+    pub fn report_item<T: Display>(item: &Option<T>, which: &str) {
         match item {
             Some(what)=>{
                 println!("{} hand is holding {}", which,what);
@@ -56,11 +56,24 @@ mod model {
     } 
 }
  
+fn gives_ownership() -> String {             // gives_ownership will move its
+    let some_string = String::from("yours"); // some_string comes into scope
+    some_string                              // some_string is returned and
+}
 
 fn main() {
     let mut hands = Hands::new();
     hands.report();
     hands = hands.juggle(); 
     hands.report();
+
+
+    let s = gives_ownership();
+    println!("s:{}", s);
+    //Rust guarantees memory safety with a feature called ownership.  ** Rust borrow checker
+    let mut s1 = String::from("abc");
+    println!("S1:{}", s1);
+    let str_hi= String::from("Hi");
+
 }
  
