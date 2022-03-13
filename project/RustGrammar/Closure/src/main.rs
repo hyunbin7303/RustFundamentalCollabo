@@ -59,3 +59,4 @@ fn main() {
     // Move Closure. 
     
 }
+//https://www.youtube.com/watch?v=drYtaZopxgQ&ab_channel=Rhymu%27sVideos

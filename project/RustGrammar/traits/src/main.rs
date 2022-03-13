@@ -84,9 +84,10 @@ pub fn notify(item:&impl Summary){
 pub fn notify_generic<T: Summary>(item: &T) {
     println!("Breaking news ! {}", item.summarize());
 }
-// fn testing_Generic<T,U>(t: &T, u: &U) -> i32 {
 
-// }
+// Example from...
+
+
 
 fn returns_summarize() -> impl Summary { 
     Tweet {
