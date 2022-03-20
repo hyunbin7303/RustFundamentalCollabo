@@ -1,9 +1,6 @@
 use std::fmt::Display;
 
 
-
-
-
 pub trait Summary {
     fn summarize(&self) -> String;
     fn summarize2(&self) -> String{
@@ -37,11 +34,20 @@ pub struct Movie {
     release_year: u32, 
     genre: String
 }
-pub struct Dog {
-    pub name: String,
-    pub age: u32, 
-    pub owner: String
+
+mod Animal {
+    pub struct Dog {
+        pub name: String,
+        pub age: u32, 
+        pub owner: String
+    }
+    impl ToString for Dog {
+        fn to_string(&self) -> String {
+          return format!("{} is a {} year old dog who belongs to {}.", self.name, self.age, self.owner);
+        }
+    }
 }
+
 impl Summary for NewsArticle {
     fn summarize(&self)-> String{
         return format!("{}, by {}", self.headline, self.author);
@@ -59,11 +65,6 @@ impl Summary for Tweet {
     }
 }
   // Implementing an in-built trait ToString on the Dog struct
-impl ToString for Dog {
-    fn to_string(&self) -> String{
-      return format!("{} is a {} year old dog who belongs to {}.", self.name, self.age, self.owner);
-    }
-  }
 // Implementing the Details trait on Movie struct
 impl Details for Movie{
 
@@ -84,11 +85,6 @@ pub fn notify(item:&impl Summary){
 pub fn notify_generic<T: Summary>(item: &T) {
     println!("Breaking news ! {}", item.summarize());
 }
-
-// Example from...
-
-
-
 fn returns_summarize() -> impl Summary { 
     Tweet {
         username : String::from("Tweet Name"),
@@ -145,7 +141,7 @@ fn main() {
       headline: String::from("Head Line"),
       content: String::from("Content of the head line"),
   };
-  let dog = Dog{name: "Frodo".to_string(), age: 3, owner: "Maryam".to_string()};
+  let dog = Animal::Dog{name: "Frodo".to_string(), age: 3, owner: "Maryam".to_string()};
   println!("{}", dog.to_string());
 
 

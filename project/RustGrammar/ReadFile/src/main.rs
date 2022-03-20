@@ -6,9 +6,9 @@ use std::io::{self, Read};
 use std::io::prelude::*;
 use std::error::Error;
 use std::io::BufReader;
-//https://kerkour.com/rust-read-file
+//
 //https://github.com/skerkour/kerkour.com/blob/main/2021/rust_file_encryption/src/main.rs
-//https://adventures.michaelfbryan.com/posts/deserializing-binary-data-files/
+//
 
 
 #[derive(Debug)]
@@ -93,7 +93,6 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     // TODO : Make some test cases. 
     
 }
