@@ -68,13 +68,8 @@ fn test1() {
 
 
 
-fn to_words<'a>(text: &'a str) -> impl Iterator<Item = &'a str> {
-    text.split(' ')
-}
 
 fn main() {
-    let text = "word1 word2 word3";
-    println!("{}", to_words(text).take(2).count());
 
     
     test1();

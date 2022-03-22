@@ -112,7 +112,7 @@ fn trim_newline(s: &mut String){
         }
     }
 }
-fn read_textfile(filename: &str) -> Result<(), Error> {
+fn read_textfile(filename: &str) -> Result<(), Box<dyn std::error::Error>>{
     //trim_newline(&filename);
     let mut s = filename.to_string();
     s.pop();

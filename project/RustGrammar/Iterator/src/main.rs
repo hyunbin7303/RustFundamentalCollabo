@@ -1,5 +1,8 @@
 
 
+
+
+//https://stackoverflow.com/questions/27535289/what-is-the-correct-way-to-return-an-iterator-or-any-other-trait
 //https://depth-first.com/articles/2020/06/22/returning-rust-iterators/
 
 pub struct Repeater <'a> {
@@ -23,9 +26,6 @@ impl ContainerWithWrapper {
     fn values(&self) -> impl Iterator<Item=u8> + '_ {
         self.items.iter().map(|wrapper| wrapper.value)
     }
-
-    // fn values2(&self) -> impl
-
 }
 
 trait ContainerAnnotation<'a> {
@@ -33,6 +33,15 @@ trait ContainerAnnotation<'a> {
     fn items(&'a self) -> Self::ItemIterator; 
 }
 
+fn to_words<'a>(text: &'a str) -> impl Iterator<Item = &'a str> {
+    text.split(' ')
+}
+fn to_words_dynamic_dispatching<'a>(text: &'a str) -> Box<dyn Iterator<Item = &'a str> + 'a> {
+    Box::new(text.split(' '))
+}
+fn num_impl_iterator(n: i32) -> impl Iterator<Item= i32> {
+    (0..n).map(|x| x * 10)
+}
 
 fn main() {
     let v = vec![1, 2, 3];
@@ -66,5 +75,13 @@ fn main() {
     let wrapping_container = ContainerWithWrapper { items : wrap_test };
     for element in wrapping_container.items {
         println!("{}", element.value);
+    }
+    let text = "word1 word2 word3";
+    println!("{}", to_words(text).take(2).count());
+    println!("{}", to_words_dynamic_dispatching(text).take(2).count());
+
+    let num_1 = num_impl_iterator(10);
+    for element in num_1 {
+        println!("{}", element);
     }
 }
