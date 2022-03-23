@@ -1,13 +1,10 @@
-use std::fs;
-use std::process;
-use std::error::Error;
-use std::fs::File;
+mod word;
+
 use std::io::prelude::*;
-use std::io::{Write,BufReader, BufRead, ErrorKind};
-use same_file::Handle;
-use std::path::Path;
 use std::fmt::Display;
 use std::env::args;
+use WordFinder::config_handle::{ parse_config };
+use WordFinder::file_util::*;
 //TODO
 //1. Command line : Search for the specific word in the text file/json file.
 // Word counts, How many words in the txt file?
@@ -31,8 +28,6 @@ use std::env::args;
 // Use Function/ FnONce, 
 //https://stackoverflow.com/questions/36390665/how-do-you-pass-a-rust-function-as-a-parameter
 
-
-
 impl Sentence {
     fn print_words(&self) {
         for word in &self.words {
@@ -40,167 +35,62 @@ impl Sentence {
         }
     }
 }
-
-
-impl Default for Word {
-    fn default () -> Word {
-        Word{letter: "".to_string(), meaning: "".to_string(), synonym: "".to_string()}
+impl Default for word::Word {
+    fn default () -> word::Word {
+        word::Word{letter: "".to_string(), meaning: "".to_string(), synonym: "".to_string()}
     }
 }
 
-impl From<Vec<Word>> for Sentence {
-    fn from(words: Vec<Word>) -> Self {
+impl From<Vec<word::Word>> for Sentence {
+    fn from(words: Vec<word::Word>) -> Self {
         Self { words }
     }
 }
-//path: std::path::PathBuf,
-struct Config {
-    query: String,
-    filename: String,
-    search_word: String,
-}
-impl Config {
-    fn new(args: &[String]) -> Result<Config, &str>{
-        if args.len() <3 {
-            return Err("Not enough arguments. Please check the requirement.");
-        }
-        let query = args[1].clone();
-        let filename = args[2].clone();
-        let search_word = args[3].clone();
-        Ok(Config {query, filename,search_word})
-    }
-}
 
-fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string(config.filename)?;
-    println!("With text : \n{}", contents);
-    Ok(())
-}
-
-fn parse_config(args: &[String]) -> Config {
-    let query = args[1].clone();
-    let filename = args[2].clone();
-    let search_word= args[3].clone();
-    Config { query, filename,search_word }
-}
-fn calculate_length(s: String) -> (String, usize) {
-    let length = s.len(); // len() returns the length of a String
-    (s, length)
-}
-fn generate_txtfile(filename: &str) -> Result<(), Error> {
-    let mut s = filename.to_string();
-    s.pop();
-    let mut file = File::create(&s)?;
-
-    // Get user input by the user.
-    let mut input_str = String::new();
-    std::io::stdin().read_line(&mut input_str)
-            .expect("Failed to read line");
-
-    insert_str_front(&mut input_str,"KEVIN PARK. Future Rust Software Developer.\n".to_string());
-
-    let (s2, len) = calculate_length(input_str);
-    println!("The length of the whole string : {}", len);
-    file.write_all(s2.as_bytes())?;
-    Ok(())
-}
-fn trim_newline(s: &mut String){
-    if s.ends_with('\n'){
-        s.pop();
-        if s.ends_with('\r'){
-            s.pop();
-        }
-    }
-}
-fn read_textfile(filename: &str) -> Result<(), Box<dyn std::error::Error>>{
-    //trim_newline(&filename);
-    let mut s = filename.to_string();
-    s.pop();
-
-    let path_to_read = Path::new(&s);
-    let stdout_handle = Handle::stdout()?;
-    let handle = Handle::from_path(path_to_read)?;
-
-    if handle == stdout_handle {
-        return Err(Error::new(ErrorKind::Other, "You are reading and writing to the same file."));
-    }
-    else{
-        let file = File::open(&path_to_read);
-        let file = BufReader::new(file?);
-        for(num , line) in file.lines().enumerate(){
-            println!("{} : {}", num, line?.to_uppercase());
-        }
-    }
-    Ok(())
-}
-
-
-fn insert_str_front(s: &mut String, input_str: String){
-    s.insert_str(0, &input_str,)
-}
-fn check_file_exist(filename: &str) -> bool {
-    let mut s = filename.to_string();
-    s.pop();
-    let file = std::path::Path::new(&s).exists();
-    file
-}
-// count words 
-fn count_words(word: &str) -> i32 {
-    let mut total = 0;
-    let mut previous = char::MAX;
-    0
-}
 fn print_vec<T:Display>(input: &Vec<T>){
     for item in input{
         println!("{}", item);
     }
     println!();
 }
-
-// fn read_file_string(filepath: &str) -> Result<String, Box<dyn std::error::Error>> {
-//     let data = fs::read_to_string(filepath);
-//     Ok(data);
-// }
 #[derive(Debug)]
 struct Sentence {
-    words: Vec<Word>,
-}
-#[derive(Debug)]
-struct Word {
-    letter : String,
-    meaning: String,
-    synonym: String,
-}
-impl Word {
-    fn new(letter: &str, meaning: &str, synonym: &str)-> Self{
-        Self {
-            letter : letter.to_string(),
-            meaning : meaning.to_string(),
-            synonym: synonym.to_string()
-        }
-    }
+    words: Vec<word::Word>,
 }
 
 fn main() -> std::io::Result<()> {
-    let w1 = Word::default();
-    let x = Some("air").unwrap();
-
-
-    let pattern = args().nth(1).expect("No Pattern given");
     let args_vec : Vec<String> = args().collect();
     let config = parse_config(&args_vec); 
+    if config.query == "--help" || config.query == "-h" || config.query == "-H" {
+        println!("Command list. ");
+        println!("Type command for the file handling.");
+    }
+
     println!("Action : {}", config.query);
 
-    if config.query == "dictionary"{
+    if config.query == "dictionary" {
+        //TODO get the word from the json file? 
 
-        //get the word from the json file? 
-
-        let word_apple = Word::new("APPLE", "the round fruit of a tree of the rose family, which typically has thin red or green skin and crisp flesh. Many varieties have been developed as dessert or cooking fruit or for making cider.", "");
-        let word_upgrade = Word::new("UPGRADE","raise (something) to a higher standard, in particular improve (equipment or machinery) by adding or replacing components.", "BOOST" );
+        let word_apple = word::Word::new("APPLE", "the round fruit of a tree of the rose family, which typically has thin red or green skin and crisp flesh. Many varieties have been developed as dessert or cooking fruit or for making cider.", "");
+        let word_upgrade = word::Word::new("UPGRADE","raise (something) to a higher standard, in particular improve (equipment or machinery) by adding or replacing components.", "BOOST" );
         let words = vec![word_apple, word_upgrade];
         let sentences = Sentence::from(words);
         sentences.print_words();
     
+    }
+    else if config.query == "search" || config.query == "-s" || config.query == "-S" {
+        println!("Searching for the specific word?");
+    }
+    else if config.query == "create" || config.query == "-c" || config.query == "-C" {
+
+    }
+    else if config.query == "delete" || config.query == "-d" || config.query == "-D" {
+        let is_exist = check_file_exist(&config.filename);
+        if is_exist {
+            remove_textfile(&config.filename);
+        }else{
+            println!("File doesn't exist.");
+        }
     }
     else{
         println!("In file : {}", config.filename);
@@ -220,8 +110,6 @@ fn main() -> std::io::Result<()> {
             generate_txtfile(&txt_name); 
         }
     }
-    // use insert_str_front 
-    // And store again
     Ok(())
 }
 //https://superuser.com/questions/886132/where-is-the-zshrc-file-on-mac
