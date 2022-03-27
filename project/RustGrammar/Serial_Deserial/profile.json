@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "type": "personal",
+      "details": {
+        "firstName": "Juliano",
+        "lastName": "Alves",
+        "primaryAddress": 7777777
+      }
+    },
+    {
+      "id": 2,
+      "type": "business",
+      "details": {
+        "name": "Juliano Business",
+        "companyRole": "OWNER",
+        "primaryAddress": 8888888
+      }
+    }
+]

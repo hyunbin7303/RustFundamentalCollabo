@@ -7,11 +7,11 @@
     pub struct Config {
         pub query: String,
         pub filename: String,
-        pub search_word: String,
+        pub search_word: Option<String>,
     }
     impl Config {
         fn new(args: &[String]) -> Result<Config, &str>{
-            if args.len() <3 {
+            if args.len() < 2 {
                 return Err("Not enough arguments. Please check the requirement.");
             }
             let query = args[1].clone();
@@ -22,14 +22,20 @@
 
             }
             let filename = args[2].clone();
-            let search_word = args[3].clone();
+            let mut search_word: Option<String> = Option::None;
+            if args.len() >= 3 {
+                search_word = Some(args[3].clone());
+            }
             Ok(Config {query, filename,search_word})
         }
     }
     pub fn parse_config(args: &[String]) -> Config {
         let query = args[1].clone();
         let filename = args[2].clone();
-        let search_word= args[3].clone();
+        let mut search_word: Option<String> = Option::None;
+        if args.len() >3 {
+            search_word = Some(args[3].clone());
+        }
         Config { query, filename,search_word }
     }
     pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
@@ -44,15 +50,14 @@ pub mod file_util {
     use same_file::Handle;
     use std::path::Path;
     use std::io::{Write,BufReader, BufRead, ErrorKind};
-
+    use std::fmt::Display;
 
     pub fn calculate_length(s: String) -> (String, usize) {
         let length = s.len(); // len() returns the length of a String
         (s, length)
     }
     pub fn generate_txtfile(filename: &str) -> Result<(), Box<dyn std::error::Error>> {
-        let mut s = filename.to_string();
-        s.pop();
+        let s = filename.to_string();
         let mut file = File::create(&s)?;
     
         // Get user input by the user.
@@ -66,6 +71,12 @@ pub mod file_util {
         println!("The length of the whole string : {}", len);
         file.write_all(s2.as_bytes())?;
         Ok(())
+    }
+    fn print_vec<T:Display>(input: &Vec<T>){
+        for item in input{
+            println!("{}", item);
+        }
+        println!();
     }
     pub fn trim_newline(s: &mut String){
         if s.ends_with('\n'){
@@ -95,12 +106,10 @@ pub mod file_util {
             }
         }
         Ok(())
-    }
-    
+    }  
     pub fn remove_textfile(filename: &str) -> Result<(), Box<dyn std::error::Error>>{
         Ok(())
     }
-    
     pub fn insert_str_front(s: &mut String, input_str: String){
         s.insert_str(0, &input_str,)
     }

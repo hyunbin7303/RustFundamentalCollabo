@@ -3,7 +3,6 @@ struct Name {
     middle_name: Option<String>, // middle_name can be empty
     last_name: String,
 }
-use std::env;
 fn get_full_name(fname: &str, lname: &str, mname: Option<&str>) -> String { // middle name can be empty
   match mname {
     Some(n) => format!("{} {} {}", fname, n, lname),

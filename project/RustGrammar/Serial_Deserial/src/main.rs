@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate serde_derive;
 
-use serde_json::Result;
+use serde_json::{Number, Value, Result, Map};
 use serde::{Serialize, Deserialize};
 
 #[derive(Deserialize, Debug)]
@@ -24,6 +24,13 @@ struct Point {
     y: i32
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+struct Person {
+    name: String,
+    age: u8,
+    phones: Vec<String>,
+}
+
 #[derive(Deserialize, Debug)]
 #[serde(tag = "type", rename_all = "camelCase")]
 enum Profile {
@@ -36,39 +43,69 @@ enum Profile {
         details: BusinessDetails,
     },
 }
-
+fn simple_map_test() {
+  let maptesting =
+    serde_json::from_str::<Map<String, Value>>(r#"
+        {
+          "gender":"male",
+          "blah":25,
+          "Kevin": "Rust Beginner",
+          "Macy": "Product Manager"
+        }
+        "#).unwrap();
+    println!("{:?}", maptesting);
+}
 fn main() -> Result<()> {
-    let point = Point {x: 1, y: 2};
+    //simple_map_test();
+    // let point = Point {x: 1, y: 2};
+    // let serialized_obj = serde_json::to_string(&point).unwrap();
+    // println!("Serialized = {}", serialized_obj);
+    // let deserialized_obj: Point = serde_json::from_str(&serialized_obj).unwrap();
+    // println!("Deserialized = {:?}", deserialized_obj);
 
-    let serializedObj = serde_json::to_string(&point).unwrap();
-    println!("Serialized = {}", serializedObj);
+    let test_profile_json = {
+      let text = std::fs::read_to_string("profile.json").unwrap();
+      let profiles: Vec<Profile> = serde_json::from_str(&text)?;
+      profiles
+    };
+    println!("Reading from the json file. {:#?}", test_profile_json);
+    println!("---------");
 
-    let deserializedObj: Point = serde_json::from_str(&serializedObj).unwrap();
-    println!("Deserialized = {:?}", deserializedObj);
+    let person_json = {
+      let text = std::fs::read_to_string("person.json").unwrap();
+      let people: Vec<Person> = serde_json::from_str(&text).unwrap();
+      people
+    };
+    println!("Reading from the json file. {:#?}", person_json);
 
-    let data = r#"
-    [
-      {
-        "id": 1,
-        "type": "personal",
-        "details": {
-          "firstName": "Juliano",
-          "lastName": "Alves",
-          "primaryAddress": 7777777
+    let mut missy_diet = {
+        // Load the first file into a string.
+        let text = std::fs::read_to_string("test.json").unwrap();
+        // Parse the string into a dynamically-typed JSON structure.
+        serde_json::from_str::<Value>(&text).unwrap()
+    };
+
+    // Get the number of elements in the object 'missy_food_schedule'
+    let nb_elements = missy_diet["missy_food_schedule"].as_array().unwrap().len();
+    println!("{}", nb_elements);
+    for index in 0..nb_elements{
+        if let Value::Number(n) = &missy_diet["missy_food_schedule"][index]["quantity"] {
+            // Double the quantity for each element in 'missy_food_schedule'
+            missy_diet["missy_food_schedule"][index]["quantity"] =
+                Value::Number(Number::from_f64(n.as_f64().unwrap() * 2.).unwrap());
+
         }
-      },
-      {
-        "id": 2,
-        "type": "business",
-        "details": {
-          "name": "Juliano Business",
-          "companyRole": "OWNER",
-          "primaryAddress": 8888888
-        }
-      }
-    ]
-    "#;
-    let profiles: Vec<Profile> = serde_json::from_str(data)?;
-    println!("{:#?}", profiles);
+    }
+
+    // Save the JSON structure into the other file.
+    // std::fs::write(
+    //     output_path,
+    //     serde_json::to_string_pretty(&missy_diet).unwrap(),
+    // )
+    // .unwrap();
+
+
     Ok(())
 }
+
+

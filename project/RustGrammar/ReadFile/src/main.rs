@@ -86,7 +86,9 @@ fn main() {
     println!("{}", s2.unwrap());
 
     println!("Read file line by line testing.-------");
-    read_file_line_by_line("test.txt");
+    if let Err(e) = read_file_line_by_line("test.txt") {
+        println!("{}", e); // "There is an error: Oops"
+    }
 }
 
 
