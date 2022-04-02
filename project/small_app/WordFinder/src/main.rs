@@ -68,24 +68,43 @@ fn main() -> std::io::Result<()> {
     println!("Action : {}", config.query);
 
     if config.query == "dictionary" {
-        // TODO get the word from the json file? 
-        // TODO ask for the specific word to the user.
-        // TODO Display to the user.
-        let word_apple = word::Word::new("APPLE", "the round fruit of a tree of the rose family, which typically has thin red or green skin and crisp flesh. Many varieties have been developed as dessert or cooking fruit or for making cider.", "");
-        let word_upgrade = word::Word::new("UPGRADE","raise (something) to a higher standard, in particular improve (equipment or machinery) by adding or replacing components.", "BOOST" );
-        let words = vec![word_apple, word_upgrade];
-        let sentences = Sentence::from(words);
-        sentences.print_words();
-    
+        let words = {
+            let text = std::fs::read_to_string("simple_english_dictionary.json").unwrap();
+            let dic = serde_json::from_str::<Map<String, Value>>(&text).unwrap();
+            dic
+        };
+        match config.search_word {
+            Some(x) => println!("{}", words[&x]),
+            None => println!("Nothing for the search word")
+        };
+        
     }
     else if config.query == "search" || config.query == "-s" || config.query == "-S" {
-        println!("Searching for the specific word?");
-        //TODO Searching the specific word from the file? 
+        if config.search_word == None {
+            println!("Please type search word.");
+            process::exit(1);
+        }
+        println!("Search file name : {}", &config.filename);
+        let is_exist = check_file_exist(&config.filename);
+        if is_exist {
+            let contents = read_textfile(&config.filename);
+            println!("{}", contents);
+            let search_word = &config.search_word.unwrap();
+            let index:Option<usize> = contents.find(search_word).map(|i| i+1);
+            println!("first Index number : {}", index.unwrap());
+            let index_vec: Vec<_> = contents.match_indices(search_word).map(|(i, _)| i+1).collect();
+            println!("{:?}", index_vec);
+        }else{
+            println!("File Doesn't exist. Please check the file name.");
+        }
         //TODO Command line : Search for the specific word in the text file/json file.
         // Word counts, How many words in the txt file?
         // Based on the input file from the config file? // How to work on using the txt file.????
     }
     else if config.query == "search-sentence" {
+        //TODO 
+        //Read the specific file you mentioned.
+
         //TODO Sentence finder. Find the all sentense that uses the specific word.
         // TODO Get sentence from the user.
     }
@@ -104,7 +123,7 @@ fn main() -> std::io::Result<()> {
     else if config.query == "read" || config.query == "-r" || config.query == "-R" {
         let is_exist = check_file_exist(&config.filename);
         if is_exist {
-            if let Err(e) = read_textfile(&config.filename) {
+            if let Err(e) = read_textfile_print(&config.filename) {
                 println!("{}", e); // "There is an error: Oops"
                 process::exit(1);
             }
@@ -139,6 +158,6 @@ mod tests {
     fn it_works(){
         let txt = "hello world kevin";
         // assert_eq!(txt, result);
-
+        read_jsonfile();
     }
 }

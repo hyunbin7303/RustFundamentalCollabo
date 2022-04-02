@@ -1,5 +1,6 @@
 
- pub mod config_handle {
+
+pub mod config_handle {
     use std::fs;
     use std::error::Error;
     
@@ -86,7 +87,7 @@ pub mod file_util {
             }
         }
     }
-    pub fn read_textfile(filename: &str) -> Result<(), Box<dyn std::error::Error>>{
+    pub fn read_textfile_print(filename: &str) -> Result<(), Box<dyn std::error::Error>>{
         //trim_newline(&filename);
         let mut s = filename.to_string();
         s.pop();
@@ -107,6 +108,10 @@ pub mod file_util {
         }
         Ok(())
     }  
+    pub fn read_textfile(filename: &str) -> String {
+        let data = std::fs::read_to_string(filename).expect("Unable to read file");
+        data
+    }
     pub fn remove_textfile(filename: &str) -> Result<(), Box<dyn std::error::Error>>{
         Ok(())
     }
@@ -114,8 +119,8 @@ pub mod file_util {
         s.insert_str(0, &input_str,)
     }
     pub fn check_file_exist(filename: &str) -> bool {
-        let mut s = filename.to_string();
-        s.pop();
+        let s = filename.to_string();
+        // s.pop();
         let file = std::path::Path::new(&s).exists();
         file
     }

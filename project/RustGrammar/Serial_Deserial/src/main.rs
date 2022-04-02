@@ -55,6 +55,28 @@ fn simple_map_test() {
         "#).unwrap();
     println!("{:?}", maptesting);
 }
+pub fn strongly_type_json() -> Result<()> {
+  let test_profile_json = {
+    let text = std::fs::read_to_string("profile.json").unwrap();
+    let profiles: Vec<Profile> = serde_json::from_str(&text)?;
+    profiles
+  };
+  println!("Reading from the json file. {:#?}", test_profile_json);
+  println!("---------");
+  Ok(())
+}
+
+pub fn strongly_type_json2() -> Result<()> {
+  let person_json = {
+    let text = std::fs::read_to_string("person.json").unwrap();
+    let people: Vec<Person> = serde_json::from_str(&text).unwrap();
+    people
+  };
+  println!("Reading from the json file. {:#?}", person_json);
+  Ok(())
+}
+
+
 fn main() -> Result<()> {
     //simple_map_test();
     // let point = Point {x: 1, y: 2};
@@ -63,20 +85,16 @@ fn main() -> Result<()> {
     // let deserialized_obj: Point = serde_json::from_str(&serialized_obj).unwrap();
     // println!("Deserialized = {:?}", deserialized_obj);
 
-    let test_profile_json = {
-      let text = std::fs::read_to_string("profile.json").unwrap();
-      let profiles: Vec<Profile> = serde_json::from_str(&text)?;
-      profiles
-    };
-    println!("Reading from the json file. {:#?}", test_profile_json);
-    println!("---------");
 
-    let person_json = {
-      let text = std::fs::read_to_string("person.json").unwrap();
-      let people: Vec<Person> = serde_json::from_str(&text).unwrap();
-      people
+
+    let dic_json = {
+      let text = std::fs::read_to_string("dic.json").unwrap();
+      let dic = serde_json::from_str::<Map<String, Value>>(&text).unwrap();
+      dic
     };
-    println!("Reading from the json file. {:#?}", person_json);
+    println!("Reading from the json file. {:#?}", dic_json);
+    println!("{}", dic_json["kevin1"]);
+    println!("------------");
 
     let mut missy_diet = {
         // Load the first file into a string.
@@ -96,15 +114,6 @@ fn main() -> Result<()> {
 
         }
     }
-
-    // Save the JSON structure into the other file.
-    // std::fs::write(
-    //     output_path,
-    //     serde_json::to_string_pretty(&missy_diet).unwrap(),
-    // )
-    // .unwrap();
-
-
     Ok(())
 }
 
