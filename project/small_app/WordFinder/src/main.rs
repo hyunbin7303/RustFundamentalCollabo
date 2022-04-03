@@ -93,13 +93,13 @@ fn main() -> std::io::Result<()> {
             let index:Option<usize> = contents.find(search_word).map(|i| i+1);
             println!("first Index number : {}", index.unwrap());
             let index_vec: Vec<_> = contents.match_indices(search_word).map(|(i, _)| i+1).collect();
-            println!("{:?}", index_vec);
+            println!("All index numbers {:?}", index_vec);
+
+            //
+            
         }else{
             println!("File Doesn't exist. Please check the file name.");
         }
-        //TODO Command line : Search for the specific word in the text file/json file.
-        // Word counts, How many words in the txt file?
-        // Based on the input file from the config file? // How to work on using the txt file.????
     }
     else if config.query == "search-sentence" {
         //TODO 
