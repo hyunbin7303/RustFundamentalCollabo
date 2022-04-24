@@ -1,3 +1,11 @@
+#[derive(PartialEq, Debug)]
+struct Shoe {
+    size: u32,
+    style: String,
+}
+
+
+
 
 fn twice<F: Fn(i32) -> i32>(x: i32, f: F) -> i32 {
     f(x) + f(x)
@@ -16,19 +24,14 @@ fn number_return() -> i32 {
 
 fn main() {
 
- //   let num: i32 = number_return();
- //   println!("number checking : {}", num);
-
     compose(5,
         |n: i32| { n + 42 },
         |n: i32| { n * 2 }); // evaluates to 94
 
-
-    println!("Hello, world! Closure Testing");
     let square = |x: i32| { x * x };
     twice(5, |x: i32| { x * x }); // evaluates to 50
     //twice(5, square); // evaluates to 50
-    println!("the square value will be {}.", square);
+    // println!("the square value will be {}.", square);
 
     let add_one = |x| { 1 + x };
     println!("The sum of 5 plus 1 is {}.", add_one(5));
@@ -59,4 +62,3 @@ fn main() {
     // Move Closure. 
     
 }
-//https://www.youtube.com/watch?v=drYtaZopxgQ&ab_channel=Rhymu%27sVideos

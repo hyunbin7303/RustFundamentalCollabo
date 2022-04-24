@@ -124,5 +124,34 @@ pub mod file_util {
         let file = std::path::Path::new(&s).exists();
         file
     }
+
+    // source from https://doc.rust-lang.org/rust-by-example/trait/impl_trait.html
+    pub fn parse_csv_document(filename: &str) -> std::io::Result<Vec<Vec<String>>> {
+        let f = File::open(&filename)?;
+        let f = BufReader::new(f);
+        f.lines()
+            .map(|line| {
+                // For each line in the source
+                line.map(|line| {
+                    // If the line was read successfully, process it, if not, return the error
+                    line.split(',') // Split the line separated by commas
+                        .map(|entry| String::from(entry.trim())) // Remove leading and trailing whitespace
+                        .collect() // Collect all strings in a row into a Vec<String>
+                })
+            })
+            .collect() // Collect all lines into a Vec<Vec<String>>
+    }
+    
+    pub fn print_line_at(filename: &str, line_num: usize) {
+        if line_num < 1 {
+            panic!("Line number has to be > 0");
+        }
+        let line_num = line_num - 1;
+        let file = File::open(filename).expect("File not found or cannot be opened");
+        let content = BufReader::new(&file);
+        let mut lines = content.lines();
+        let line = lines.nth(line_num).expect("No line found at given position");
+        println!("{}", line.expect("None line"));
+    }
 }
 

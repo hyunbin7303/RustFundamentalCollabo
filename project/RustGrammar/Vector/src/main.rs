@@ -1,26 +1,56 @@
+use std::iter;
+use std::vec::IntoIter;
+use std::fmt;
+#[macro_use]
+extern crate bencher;
+
+use bencher::Bencher;
+
 struct Person {
     pub first_name: String,
     pub last_name: Option<String>,
     pub age: i32,
 }
+#[derive(Debug)]
 
+struct Album {
+    pub title: String,
+    pub artist: String,
+}
 
 fn main() {
+    let v = vec!["bat", "man"];
+    let s: String = v.concat();
+    println!("{}", s);
+
     let v1: Vec<i32> = vec![1, 2, 3];
     let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
     for element in v2 {
         println!("{}", element);
     } 
 
-    let mut old1 = vec!["richard", "Peter", "charles"];
-    // println!("{:?}", old1);
-    
+    let old1 = vec!["richard", "Peter", "charles"];
     let old2 = vec!["Maria", "Helena", "Rachel"];
-    let new_one = [&old1[..], &old2[..]].concat();
-    println!("{:?}", old1);
-    println!("{:?}", new_one);
+    let new_one = [&old1[..2], &old2[..]].concat();
+    println!("old1 {:?}", old1);
+    println!("new_one : {:?}", new_one);
 
-    let mut iter = split_whitespace_indices(" Hello world");
+
+
+    let mut albums_t = vec![
+        Album { title: "you can do it".into(),artist: "Kevin Park".into(),},
+        Album { title: "No matter how hard it is".into(), artist: "hyunbin park".into(),},
+    ];
+    let mut albums_t2 = vec![
+        Album { title: "How to be better at Rust?".into(),artist: "Hyunbin Park".into(),},
+        Album { title: "hahaha artist!".into(), artist: "Hojun Park".into(),},
+    ];
+    albums_t.extend(albums_t2);
+    println!("{:?}", albums_t);
+
+
+
+    let iter = split_whitespace_indices(" Hello world");
     for element in iter {
         println!("{} - {}", element.0, &element.1);
     }
@@ -60,8 +90,28 @@ fn main() {
 
     println!("{:?}", ages_of_people_with_second_name_using_seperate_filter_map);
 
+    testing();
 
+    let albums = vec![
+        Album {
+            title: "Sgt. Pepper's Lonely Hearts Club Band".into(),
+            artist: "The Beatles".into(),
+        },
+        Album {
+            title: "Dark Side of the Moon".into(),
+            artist: "Pink Floyd".into(),
+        },
+    ];
+
+    println!("{:?}", albums);
 }
+
+impl fmt::Display for Album {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{} ({})", self.title, self.artist)
+    }
+}
+
 
 fn testing(){
     let my_string = "Some small words, they're this.\nTogether";
@@ -75,11 +125,21 @@ fn testing(){
             false => None,
         })
         .collect::<String>();
+        println!("{}", substring);
 }
 
+fn combine_cycle_testing(){
+    let v1= vec![1, 2, 3];
+    let v2 = vec![4, 5];
+    let mut result = combine_two_vectors_cycle(v1, v2);
+    for element in result {
+        println!("{}", element);
+    }
+}
 
-
-
+fn combine_two_vectors_cycle(v1: Vec<i32>, v2: Vec<i32>) -> impl Iterator<Item=i32> {
+    v1.into_iter().chain(v2.into_iter()).cycle()
+}
 // how they did this? 
 fn addr_of(s: &str) -> usize {
     s.as_ptr() as usize

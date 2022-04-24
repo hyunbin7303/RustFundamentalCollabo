@@ -5,6 +5,29 @@
 //https://stackoverflow.com/questions/27535289/what-is-the-correct-way-to-return-an-iterator-or-any-other-trait
 //https://depth-first.com/articles/2020/06/22/returning-rust-iterators/
 
+
+
+pub struct Foo {
+    count: u8,
+}
+impl Iterator for Foo {
+    type Item = u8;
+    fn next(&mut self) -> Option<Self::Item>{
+        match self.count {
+            0 => {
+                self.count = self.count + 1;
+                Option::Some(1)
+            }
+            1 => {
+                self.count = self.count + 1;
+                Option::Some(10) 
+            }
+            _ => None 
+        }
+    } 
+}
+
+
 pub struct Repeater <'a> {
     iter: std::slice::Iter<'a, u8>,
 }
@@ -27,7 +50,6 @@ impl ContainerWithWrapper {
         self.items.iter().map(|wrapper| wrapper.value)
     }
 }
-
 trait ContainerAnnotation<'a> {
     type ItemIterator: Iterator<Item=&'a u8>;
     fn items(&'a self) -> Self::ItemIterator; 
@@ -44,6 +66,14 @@ fn num_impl_iterator(n: i32) -> impl Iterator<Item= i32> {
 }
 
 fn main() {
+
+    let i = Foo { count: 0 };
+    let v = Vec::from_iter(i);                        
+    for value in v {
+        println!("value: {}", value);
+    }
+
+
     let v = vec![1, 2, 3];
     let mut iter = v.into_iter();
     while let Some(number) = iter.next() {

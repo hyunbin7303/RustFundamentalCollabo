@@ -6,12 +6,7 @@ use WordFinder::config_handle::{ parse_config };
 use WordFinder::file_util::*;
 use std::collections::HashMap;
 extern crate serde_json;
-
 use serde_json::{Value, Map};
-// Use Fn : Itcannot modify the objects it captures
-// Use FnMut : It can modify the objects it captures
-// Use FnOnce : The most restricted. Can only ba called once because when it is called it consumes
-
 
 // Use the argument parsing as well. 
 //https://doc.rust-lang.org/book/ch12-03-improving-error-handling-and-modularity.html
@@ -28,7 +23,7 @@ impl Sentence {
 }
 impl Default for word::Word {
     fn default () -> word::Word {
-        word::Word{letter: "".to_string(), meaning: "".to_string(), synonym: "".to_string()}
+        word::Word{letter: "".to_string(), meaning: "".to_string(), synonyms: Vec::new() }
     }
 }
 
@@ -95,11 +90,26 @@ fn main() -> std::io::Result<()> {
             let index_vec: Vec<_> = contents.match_indices(search_word).map(|(i, _)| i+1).collect();
             println!("All index numbers {:?}", index_vec);
 
-            //
+            // TODO : Find the specific lines of the string. 
+            // Display the line numbers to the screen. 
             
         }else{
             println!("File Doesn't exist. Please check the file name.");
         }
+    }
+    else if config.query == "csv-handler" {
+      parse_csv_document(&config.filename);
+      let is_exist = check_file_exist(&config.filename);
+      if is_exist {
+
+      }else {
+          println!("File doesn't exist. Please check the file name.");
+          process::exit(1);
+      }
+    }
+    else if config.query == "print-line"{
+        println!("Testing. Just printout the first line.");
+        print_line_at(&config.filename, 1);
     }
     else if config.query == "search-sentence" {
         //TODO 
