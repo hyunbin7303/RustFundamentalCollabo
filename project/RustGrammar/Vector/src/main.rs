@@ -1,10 +1,6 @@
 use std::iter;
 use std::vec::IntoIter;
 use std::fmt;
-#[macro_use]
-extern crate bencher;
-
-use bencher::Bencher;
 
 struct Person {
     pub first_name: String,
@@ -35,6 +31,11 @@ fn main() {
     println!("old1 {:?}", old1);
     println!("new_one : {:?}", new_one);
 
+
+    std::vector<int> A{ 1, 2, 3, 4, 5};
+    std::vector<int> B{ 10, 20, 30 };
+
+    VecProxy<int> AB(A, B);  // ----> O(1). No copies performed.
 
 
     let mut albums_t = vec![
@@ -103,7 +104,7 @@ fn main() {
         },
     ];
 
-    println!("{:?}", albums);
+    println!("Displaying testing using the fm:: Display - {:?}", albums);
 }
 
 impl fmt::Display for Album {
@@ -140,6 +141,8 @@ fn combine_cycle_testing(){
 fn combine_two_vectors_cycle(v1: Vec<i32>, v2: Vec<i32>) -> impl Iterator<Item=i32> {
     v1.into_iter().chain(v2.into_iter()).cycle()
 }
+
+
 // how they did this? 
 fn addr_of(s: &str) -> usize {
     s.as_ptr() as usize
