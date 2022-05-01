@@ -1,53 +1,20 @@
-use std::fmt;
-#[derive(PartialEq, Debug)]
-struct Album {
-    pub title: String,
-    pub artist: String,
-}
-struct User {
-    name: String,
-    email: String,
-}
+const OKAY_CHARACTERS: &str = "1234567890+- ";
 
-impl fmt::Display for User {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-      write!(f, "{} <{}>", self.name, self.email)
+fn math(input: &str)->  i32 {
+    if !input.chars().all(|character| OKAY_CHARACTERS.contains(character)){
+        panic!("fuck this");
     }
+    let input = input.trim_end_matches(|x| "+- ".contains(x))
+        .chars()
+        .filter(|character| *character != ' ')
+        .collect::<String>();
+    println!("{}", input);
+
+    1
 }
-
-impl fmt::Display for Album {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{} ({})", self.title, self.artist)
-    }
-}
-
-// impl fmt::Display for Vec<Album> {
-//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-//         self.iter().fold(Ok(()), |result, album| {
-//             result.and_then(writeln!(f, "{:?}", album))
-//         })
-//     }
-// }
-
-
 
 
 fn main() {
-    let albums = vec![
-        Album {
-            title: "Sgt. Pepper's Lonely Hearts Club Band".into(),
-            artist: "The Beatles".into(),
-        },
-        Album {
-            title: "Dark Side of the Moon".into(),
-            artist: "Pink Floyd".into(),
-        },
-    ];
-    let new_user = User {
-        name: "Benjamin Lannon".to_string(),
-        email: "email@example.com".to_string()
-    };
-    // println!("{}", albums);
-    println!("{}", new_user); // Pri
+    math("1 + 1");
 
 }
