@@ -113,10 +113,14 @@ fn main() -> std::io::Result<()> {
     }
     else if config.query == "search-sentence" {
         //TODO 
-        //Read the specific file you mentioned.
+        println!("Read the file : {}", config.filename);
+        if let is_exist = check_file_exist(&config.filename){
+            println!("File exist. ");
 
+        }
         //TODO Sentence finder. Find the all sentense that uses the specific word.
-        // TODO Get sentence from the user.
+        // Search by dot and dot. 
+        // get substring.
     }
     else if config.query == "create" || config.query == "-c" || config.query == "-C" {
         let is_exist = check_file_exist(&config.filename);
