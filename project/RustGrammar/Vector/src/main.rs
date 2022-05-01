@@ -32,10 +32,10 @@ fn main() {
     println!("new_one : {:?}", new_one);
 
 
-    std::vector<int> A{ 1, 2, 3, 4, 5};
-    std::vector<int> B{ 10, 20, 30 };
+    // std::vector<int> A{ 1, 2, 3, 4, 5};
+    // std::vector<int> B{ 10, 20, 30 };
 
-    VecProxy<int> AB(A, B);  // ----> O(1). No copies performed.
+    // VecProxy<int> AB(A, B);  // ----> O(1). No copies performed.
 
 
     let mut albums_t = vec![
