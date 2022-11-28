@@ -1,5 +1,8 @@
 
 
+
+
+
 pub mod config_handle {
     use std::fs;
     use std::error::Error;
@@ -31,6 +34,7 @@ pub mod config_handle {
         }
     }
     pub fn parse_config(args: &[String]) -> Config {
+        
         let query = args[1].clone();
         let filename = args[2].clone();
         let mut search_word: Option<String> = Option::None;
@@ -113,6 +117,8 @@ pub mod file_util {
         data
     }
     pub fn remove_textfile(filename: &str) -> Result<(), Box<dyn std::error::Error>>{
+        
+        
         Ok(())
     }
     pub fn insert_str_front(s: &mut String, input_str: String){

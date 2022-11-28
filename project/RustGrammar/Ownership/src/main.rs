@@ -57,23 +57,41 @@ mod model {
 }
  
 fn gives_ownership() -> String {             // gives_ownership will move its
-    let some_string = String::from("yours"); // some_string comes into scope
+    let some_string = String::from("Giving ownership"); // some_string comes into scope
     some_string                              // some_string is returned and
 }
 
+
 fn main() {
+    let firstOwner = String::from("FirstOwner String"); // String is the Heap Allocation
+    let secondOwner = firstOwner; // Moving ownership
+    // println!("x={}", firstOwner); -- This gives an error because the String data type in Rust does not implement the Copy trait,
+    // its ownership gets transferred to SecondOwner.
+    println!("second Owner={}", secondOwner);
+
+    let mut s = String::from("Testing Kevin"); // S owns the Testing Kevin.
+    println!("First time s:{}", s);
+    let s = gives_ownership();
+    println!("After giving ownership s:{}", s); //Rust guarantees memory safety with a feature called ownership.  ** Rust borrow checker
+
+
+    // Use the owned string : String
+    // since both &String and &str are borrowed types.
+
+
     let mut hands = Hands::new();
     hands.report();
     hands = hands.juggle(); 
     hands.report();
 
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let s = gives_ownership();
-    println!("s:{}", s);
-    //Rust guarantees memory safety with a feature called ownership.  ** Rust borrow checker
-    let mut s1 = String::from("abc");
-    println!("S1:{}", s1);
-    let str_hi= String::from("Hi");
+    #[test]
+    fn test_give_ownership(){
+        assert_eq!(gives_ownership(), "Giving ownership");
+    }
 
 }
- 

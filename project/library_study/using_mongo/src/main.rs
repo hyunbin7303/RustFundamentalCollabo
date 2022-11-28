@@ -4,71 +4,32 @@ use std::error::Error;
 use tokio;
 use chrono::{TimeZone, Utc};
 use mongodb::bson::{doc, document::Document, oid::ObjectId, Bson};
+use serde::{Deserialize, Serialize};
 
 const DB_NAME: &str = "mongo-rust-db";
 
-#[derive(Clone, Debug)]
-pub struct DB {
-   pub client : Client,
-}
-impl DB {
-   pub async fn init() -> Result<Self> {
-      let mut client_options = ClientOptions::parse("mongodb://127.0.0.1:27017").await?;
-      client_options.app_name = Some("booky".to_string());
-      Ok(Self {
-         client: Client::with_options(client_options)?,
-      })
-   }
-}
-
-
+// Serialized Macro? 
 #[derive(Serialize, Deserialize)]
 struct Person {
    id : u32,
    name: String,
    test_scores: Vec<u32>,
+   inventory: Vec<String>
 }
 
 
 
-fn get_collection() {
-   // let coll = client.database("items").collection("in_stock");
-
-   // for i in 0..5 {
-   //    let coll_ref = coll.clone();
-
-   //    std::thread::spawn(move || {
-   //       // Perform operations with `coll_ref`. For example:
-   //       coll_ref.insert_one(doc! { "x": i }, None);
-   //    });
-   // }
-}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-   // Load the MongoDB connection string from an environment variable:
    let client_uri ="mongodb://127.0.0.1:27017/";
-    //   env::var("MONGODB_URI").expect("You must set the MONGODB_URI environment var!");`
 
-   // A Client is needed to connect to MongoDB:
-   // An extra line of code to work around a DNS issue on Windows:
-   let options =
-      ClientOptions::parse_with_resolver_config(&client_uri, ResolverConfig::cloudflare())
-         .await?;
+   let options = ClientOptions::parse_with_resolver_config(&client_uri, ResolverConfig::cloudflare()).await?;
    let client = Client::with_options(options)?;
-
-   // Print the databases in our MongoDB cluster:
-   println!("Databases:");
+   println!("Listing all Databases:");
    for name in client.list_database_names(None, None).await? {
       println!("- {}", name);
    }
-
-   let new_doc = doc! {
-      "title": "Parasite",
-      "year": 2020,
-      "plot": "A poor family, the Kims, con their way into becoming the servants of a rich family, the Parks. But their easy life gets complicated when their deception is threatened with exposure.",
-      "released": Utc.ymd(2020, 2, 7).and_hms(0, 0, 0),
-   };
 
    let db = client.database("learn-mongo");
    println!("Collection of Learn-mongo");
@@ -76,17 +37,43 @@ async fn main() -> Result<(), Box<dyn Error>> {
       println!("{}", collection_name);
    }
 
-   let user_coll = db.collection::<Document>("user");
+   let collection = db.collection::<Person>("people");
+   let docs = vec![
+      Person {
+         id: 1,
+         name: "Kevin".to_string(),
+         test_scores : vec![10,20,30],
+         inventory: vec!["Inventory1".to_string(),"Inventory2".to_string()]
+      },
+      Person {
+         id: 2,
+         name: "Hyunbin".to_string(),
+         test_scores : vec![3,4,5],
+         inventory: vec!["Hyunbin1".to_string(),"Hyunbin2".to_string()]
+      },
+      Person {
+         id: 3,
+         name: "Macy".to_string(),
+         test_scores : vec![5,6,7],
+         inventory: vec!["Snack".to_string(),"Snack2".to_string()]
+      },
+      Person {
+         id: 4,
+         name: "Macy".to_string(),
+         test_scores : vec![5,6,7],
+         inventory: vec!["Snack".to_string(),"Snack2".to_string()]
+      }
+   ];
 
 
-   let person = Person {
-      id: 1,
-      name: "Kevin".to_string(),
-      test_scores : vec![10,20,30],
-   };
-   let result = user_coll.insert_one(person, None).await;
 
-
-
+   collection.insert_many(docs, None).await?;
+   
+   
+   
+   let cursor = collection.find(doc! { "name": "Macy"}, None).await?;
+   // for result in cursor {
+   //    println!()
+   // }
    Ok(())
 }

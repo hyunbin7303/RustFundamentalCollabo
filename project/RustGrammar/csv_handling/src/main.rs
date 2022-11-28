@@ -35,3 +35,6 @@ fn main() -> io::Result<()> {
     }
     Ok(())
 }
+
+//TODO
+https://blog.burntsushi.net/csv/

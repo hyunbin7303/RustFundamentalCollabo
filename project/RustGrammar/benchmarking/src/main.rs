@@ -23,6 +23,7 @@ fn main() {
 
 
     println!("Using Criterion Library. ");
+    
 
 
 }

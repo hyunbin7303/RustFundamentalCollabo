@@ -63,6 +63,7 @@ impl Person {
 }
 
  fn main() {
+
   println!("{}", get_full_name("Galileo", "Galilei", None));
   println!("{}", get_full_name("Leonardo", "Vinci", Some("Da")));
 

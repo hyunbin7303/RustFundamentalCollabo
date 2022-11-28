@@ -49,6 +49,10 @@ struct Sentence {
     words: Vec<word::Word>,
 }
 
+
+// fn search_case()
+
+
 fn main() -> std::io::Result<()> {
 
     //Testing 
@@ -60,7 +64,6 @@ fn main() -> std::io::Result<()> {
         println!("Command list. ");
         println!("Type command for the file handling.");
     }
-    println!("Action : {}", config.query);
 
     if config.query == "dictionary" {
         let words = {
@@ -68,6 +71,16 @@ fn main() -> std::io::Result<()> {
             let dic = serde_json::from_str::<Map<String, Value>>(&text).unwrap();
             dic
         };
+
+        // TODO Search for the file
+        let file = config.filename;
+        // TODO Checking file exist.
+        //Open the file and search for the word
+
+        // Change the config model
+        
+
+
         match config.search_word {
             Some(x) => println!("{}", words[&x]),
             None => println!("Nothing for the search word")
@@ -100,27 +113,30 @@ fn main() -> std::io::Result<()> {
     else if config.query == "csv-handler" {
       parse_csv_document(&config.filename);
       let is_exist = check_file_exist(&config.filename);
-      if is_exist {
-
-      }else {
-          println!("File doesn't exist. Please check the file name.");
-          process::exit(1);
+      if !is_exist {
+        println!("File doesn't exist. Please check the file name.");
+        process::exit(1);
       }
+
     }
+    // TODO. Need to test this feature as well! 
     else if config.query == "print-line"{
         println!("Testing. Just printout the first line.");
         print_line_at(&config.filename, 1);
     }
     else if config.query == "search-sentence" {
-        //TODO 
-        println!("Read the file : {}", config.filename);
-        if let is_exist = check_file_exist(&config.filename){
-            println!("File exist. ");
-
+        println!("Searching for the word {} in the text", config.search_word.unwrap());
+      //  let search = config.search_word.unwrap();
+        let is_exist = check_file_exist(&config.filename);
+        if !is_exist{
+            println!("File doesn't exist. ");
+            process::exit(1);
         }
-        //TODO Sentence finder. Find the all sentense that uses the specific word.
-        // Search by dot and dot. 
-        // get substring.
+        let contents = read_textfile(&config.filename);
+        let split: Vec<&str> = contents.split(".").collect();
+        for s in split {
+            println!("{}", s)
+        }
     }
     else if config.query == "create" || config.query == "-c" || config.query == "-C" {
         let is_exist = check_file_exist(&config.filename);

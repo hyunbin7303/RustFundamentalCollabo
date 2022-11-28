@@ -10,5 +10,5 @@ mongodb = "2.1"
 bson = { version = "2", features = ["chrono-0_4"] } # Needed for using chrono datetime in doc
 tokio = "1"
 chrono = "0.4" # Used for setting DateTimes
-serde = "1" # Used in the Map Data into Structs section
+serde = {version = "1.0", features = ["derive"] }
 
