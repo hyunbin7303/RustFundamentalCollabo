@@ -12,6 +12,15 @@ fn first_word(s: &String) -> &str {
     }
     &s[..]
 }
+fn first_word_2(s: &str) -> &str {
+    let bytes = s.as_bytes();
+    for(i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+    &s[..]
+}
 
 // you have a string and want to change the string within a function, use &mut String for the argument
 fn modify_string(s: &mut String) {
@@ -51,6 +60,24 @@ mod tests {
     {
         let mut s = String::from("hello world");
         let word = first_word(&s); 
+        assert_eq!(word, "hello");
+    }
+
+    #[test]
+    fn test_first_word_2()
+    {
+        let mut s = String::from("hello world");
+        let word = first_word_2(&s);
+        assert_eq!(word, "hello");
+    }
+    #[test]
+    fn test_first_word_2_with_literal_string()
+    {
+        let literal_string = "hello world";
+        let word = first_word_2(literal_string);
+        let word2 = first_word_2(&literal_string[..]);
+        
+        assert_eq!(word, "hello");
         assert_eq!(word, "hello");
     }
 

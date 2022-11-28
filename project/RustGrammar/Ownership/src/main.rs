@@ -60,6 +60,40 @@ fn gives_ownership() -> String {             // gives_ownership will move its
     let some_string = String::from("Giving ownership"); // some_string comes into scope
     some_string                              // some_string is returned and
 }
+fn print_main_owner(mainstr: String) {
+    println!("{}", mainstr);
+}
+fn print_main_owner_using_ref(mainstr: &String) {
+    println!("{}", mainstr);
+}
+fn print_main_owner_using_ref_with_mut(mainstr: &mut String){
+    mainstr.push_str("-Testing");
+}
+
+fn add_up_string(mut mainstr: String){
+    mainstr.push_str("-NewString");
+    println!("{}", mainstr);
+}
+
+#[derive(Debug)]
+struct DropMe;
+impl Drop for DropMe {
+    fn drop(&mut self) {
+        println!("Dropping!");
+    }
+}
+
+struct Owned {
+    bla: String,
+}
+struct Borrowed<'a> {
+    bla: &'a str,
+}
+fn create_borrowed_obj(strpass: &str) -> Borrowed {
+    let bor = Borrowed { bla :strpass };
+    bor
+}
+
 
 
 fn main() {
@@ -74,15 +108,35 @@ fn main() {
     let s = gives_ownership();
     println!("After giving ownership s:{}", s); //Rust guarantees memory safety with a feature called ownership.  ** Rust borrow checker
 
+    let s = String::from("Main string");
+    print_main_owner(s); // pass ownership to print_main_owner and ownership is over in the method.
+    // println!("{}", s);  --> return error since s doesn't valid anymore. 
+
+    // Fix above issues by passing the ref. 
+    let s = String::from("Main string - 2");
+    print_main_owner_using_ref(&s);
+    let mut s = String::from("Mutable string");
+    print_main_owner_using_ref_with_mut(&mut s);
+
+    let test = String::from("Modify string");
+    // modify_string(mainstr);
+    add_up_string(test);
 
     // Use the owned string : String
     // since both &String and &str are borrowed types.
 
-
+    println!("Objecting handling testing ----");
     let mut hands = Hands::new();
     hands.report();
     hands = hands.juggle(); 
     hands.report();
+
+    println!("Testing ----");
+    let ownTest = Owned{
+        bla : String::from("Kevin"),
+    };
+    create_borrowed_obj(&ownTest.bla);// the borrowed value is still in scope.
+    println!("Own Test Bla data : {}", ownTest.bla);
 
 }
 #[cfg(test)]
@@ -92,6 +146,14 @@ mod tests {
     #[test]
     fn test_give_ownership(){
         assert_eq!(gives_ownership(), "Giving ownership");
+    }
+
+    #[test]
+    fn test_print_main_owner_using_ref_with_mut()
+    {
+        let mut s = String::from("Mutable string");
+        print_main_owner_using_ref_with_mut(&mut s);
+        assert_eq!(s, "Mutable string-Testing");
     }
 
 }
