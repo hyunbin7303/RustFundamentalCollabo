@@ -42,6 +42,11 @@ fn main() {
     let hithere = "HI kevin. This is the Rust study place."; // String literal , &str
     // Fixed sizem &str is a reference to a sequence of UTF-8 bytes. -> Immutable reference.
     // its type is &'static str.  String literal is a string slice pointing to that specific point of the binary.
+
+    // &str is a simple string. 
+    // let my_var = "Hello" -> you create a &str. which is very fast.println!
+    // String is a pointer, with data on the heap.println!
+
     let hit = &hithere[0..2];
     println!("{}", hit);
     let hit2 = hit;
@@ -76,7 +81,7 @@ mod tests {
         let literal_string = "hello world";
         let word = first_word_2(literal_string);
         let word2 = first_word_2(&literal_string[..]);
-        
+
         assert_eq!(word, "hello");
         assert_eq!(word, "hello");
     }
