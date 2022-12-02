@@ -8,16 +8,24 @@ struct Person {
     pub age: i32,
 }
 #[derive(Debug)]
-
 struct Album {
     pub title: String,
     pub artist: String,
 }
 
+
 fn main() {
-    let v = vec!["bat", "man"];
-    let s: String = v.concat();
-    println!("{}", s);
+    let v = vec![1, 2, 3, 4, 5];
+    let third: &i32 = &v[2];
+    println!("The third element is {}", third);
+    let third: Option<&i32> = v.get(2);
+    match third {
+        Some(third) => println!("The third element is {}", third),
+        None => println!("There is no third element."),
+    }
+
+
+
 
     let v1: Vec<i32> = vec![1, 2, 3];
     let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
@@ -34,7 +42,6 @@ fn main() {
 
     // std::vector<int> A{ 1, 2, 3, 4, 5};
     // std::vector<int> B{ 10, 20, 30 };
-
     // VecProxy<int> AB(A, B);  // ----> O(1). No copies performed.
 
 
@@ -150,4 +157,19 @@ fn addr_of(s: &str) -> usize {
 fn split_whitespace_indices(s: &str) -> impl Iterator<Item = (usize, &str)> {
     s.split_whitespace()
         .map(move |sub| (addr_of(sub) - addr_of(s), sub))
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_string_concat()
+    {
+        let v = vec!["bat", "man"];
+        let s: String = v.concat();
+        assert_eq!(s, "batman");
+    }
+
 }

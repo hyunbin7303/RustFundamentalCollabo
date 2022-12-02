@@ -36,9 +36,6 @@ fn main() {
     println!("{}", hello);
     println!("{}", world);
     println!("{}", str_hello);
-
-
-
     let hithere = "HI kevin. This is the Rust study place."; // String literal , &str
     // Fixed sizem &str is a reference to a sequence of UTF-8 bytes. -> Immutable reference.
     // its type is &'static str.  String literal is a string slice pointing to that specific point of the binary.
@@ -51,10 +48,6 @@ fn main() {
     println!("{}", hit);
     let hit2 = hit;
     println!("{}", hit2);
-    
-    let mut my_string = String::from("hello world");
-    let word = first_word(&my_string);
-    println!("{}", word);
 }
 #[cfg(test)]
 mod tests {
