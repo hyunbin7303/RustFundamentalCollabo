@@ -100,17 +100,12 @@ impl Person {
   //   match name.middle_name {
   //       None => "No middle name!",
   //       Some(ref x) => x,
-  //   }
-  // ); // remember that string literal is actually a string slice,   use ref in a pattern match to borrow a reference
+  //   } ); // remember that string literal is actually a string slice,   use ref in a pattern match to borrow a reference
+ 
+ //as_ref() converts Option<String> to Option<&String>
+  println!("Kevin's full name is {} {} {}", name.first_name, name.middle_name.as_ref().map(|m| &m[0..1]).unwrap_or(""), name.last_name);
   println!("Kevin's middle name is {}", name.middle_name.unwrap_or("No middle name.".to_owned()));
-  
-//   println!(
-//     "Alice's full name is {} {} {}",
-//     alice.first,
-//     alice.middle.as_ref().map(|m| &m[0..1]).unwrap_or(""), // as_ref() converts Option<String> to Option<&String>
-//     alice.last
-// );
-//   println1("Kevin's full name is {} {} {}", )
+  //     alice.middle.as_ref().map(|m| &m[0..1]).unwrap_or(""), // 
 
 
 
@@ -125,9 +120,22 @@ impl Person {
   p.work_phone_area_code();
   println!("{:?}",Some(p.work_phone_area_code()));
 
-// using map with Option.
+  let num = Some(20);// using map with Option.
+  let another_num = num
+      .map(|n| n-10) // 10
+      .map(|n| n*10);// 100
+  println!("{}", another_num.unwrap());  
 
 
+
+
+    // let another_number = some_number
+    //     .map(|n| n - 1) // => Some(8)
+    //     .map(|n| n * n) // => Some(64)
+    //     .and_then(|n| divide(n, 4)); // => Some(16)
+
+    //map() is used to transform Option values. 
+    // let collection = vec![Some(10), Some(20)].into_iter().collect();
 }
 
 #[cfg(test)]
@@ -169,5 +177,13 @@ mod tests {
     {
       let addup = plus_one(Some(30)).unwrap();
       assert_eq!(addup, 31);
+    }
+    #[test]
+    fn test_into_iter()
+    {
+      let v = vec!["testing", "Value", "Kevin"];
+      let mut iter = v.into_iter();
+
+      assert_eq!(Some("testing"), iter.next());
     }
 }

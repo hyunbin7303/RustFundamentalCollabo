@@ -69,12 +69,13 @@ fn print_main_owner_using_ref(mainstr: &String) {
 fn print_main_owner_using_ref_with_mut(mainstr: &mut String){
     mainstr.push_str("-Testing");
 }
-
 fn add_up_string(mut mainstr: String){
     mainstr.push_str("-NewString");
     println!("{}", mainstr);
 }
-
+fn get_byte_length(strliteral : &str) -> usize {
+    strliteral.bytes().len()
+}
 #[derive(Debug)]
 struct DropMe;
 impl Drop for DropMe {
@@ -94,6 +95,9 @@ fn create_borrowed_obj(strpass: &str) -> Borrowed {
     bor
 }
 
+fn vec_pass_by_reference(vec: &Vec<i32>) -> bool {
+    vec.is_empty()
+}
 
 
 fn main() {
@@ -155,5 +159,22 @@ mod tests {
         print_main_owner_using_ref_with_mut(&mut s);
         assert_eq!(s, "Mutable string-Testing");
     }
+
+    #[test]
+    fn test_vec_pass_by_reference_success()
+    {
+        let vec = vec![];
+        let result = vec_pass_by_reference(&vec);
+        assert_eq!(result, true);
+    }
+    #[test]
+    fn test_get_byte_length()
+    {
+        let check = "KevinPark";
+        let num = get_byte_length(check);
+        println!("{}", num);
+        assert_eq!(num, 9);
+    }
+
 
 }
