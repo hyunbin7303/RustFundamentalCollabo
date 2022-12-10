@@ -1,7 +1,16 @@
 #[derive(Debug)] enum Champ { Garen, Nami, Vayne }
 #[derive(Debug)] enum Day { Monday, Tuesday, Wednesday }
+#[derive(Debug)]
+enum GamePlayOption {
 
-
+}
+struct QuitMessage; // unit struct
+struct MoveMessage {
+    x: i32,
+    y: i32,
+}
+struct WriteMessage(String); // tuple struct
+struct ChangeChampColorMessage(i32, i32, i32); // tuple struct
 fn skin_own(champ: Champ) -> Option<Champ> {
     match champ {
         Champ::Nami => None,
