@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::env;
-
+mod person;
 pub fn main(){
     let mut scores = HashMap::new();
     scores.insert("Sunface", 98);
@@ -11,7 +11,20 @@ pub fn main(){
     let score = scores.get("Sunface");
     println!("{:?}", score);
 
-    let person1 = new Person("hyunbin", "asdf@gmail.com");
+
+    let user = person::User {
+        userid: 1,
+        username: "hyunbin7303",
+    };
+
+    let myname = "Hyunbin".to_string();
+    let myemail = "hyunbin7303@gmail.com".to_string();
+    let person1 = person::Person {
+        username: String::from("Hyunbin7303"),
+        email : String::from("Hyunbin7303@gmail.com"),
+        active : true,
+        sign_in_count : 0 
+    };
 
 
     // let mut eng2span: HashMap<&str, &str> = HashMap::new();

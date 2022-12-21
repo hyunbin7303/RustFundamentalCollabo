@@ -29,7 +29,7 @@ fn playable_champ(champ : Champ) -> Option<Champ> {
         Some(champ) => match skin_own(champ) {
             None => None,
             Some(champ) => Some(champ),
-        }
+        }   
     }
 }
 fn playable_champ_better(champ: Champ) -> Option<Champ> {
