@@ -5,8 +5,6 @@
 //https://stackoverflow.com/questions/27535289/what-is-the-correct-way-to-return-an-iterator-or-any-other-trait
 //https://depth-first.com/articles/2020/06/22/returning-rust-iterators/
 
-
-
 pub struct Foo {
     count: u8,
 }
@@ -73,12 +71,15 @@ fn main() {
         println!("value: {}", value);
     }
 
-
+    println!("IntoIter Teting ---------")
     let v = vec![1, 2, 3];
     let mut iter = v.into_iter();
     while let Some(number) = iter.next() {
         println!("{}", number);
     }
+    println!("-----------------------")
+
+
     // First, we declare a type which has `iter` method to get the `Iter` struct (`&[usize]` here):
     let slice = &[10, 20, 30];
     for element in slice {
