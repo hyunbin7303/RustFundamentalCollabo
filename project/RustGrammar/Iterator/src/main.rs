@@ -71,15 +71,9 @@ fn main() {
         println!("value: {}", value);
     }
 
-    println!("IntoIter Teting ---------")
-    let v = vec![1, 2, 3];
-    let mut iter = v.into_iter();
-    while let Some(number) = iter.next() {
-        println!("{}", number);
-    }
-    println!("-----------------------")
 
 
+    
     // First, we declare a type which has `iter` method to get the `Iter` struct (`&[usize]` here):
     let slice = &[10, 20, 30];
     for element in slice {
@@ -114,5 +108,31 @@ fn main() {
     let num_1 = num_impl_iterator(10);
     for element in num_1 {
         println!("{}", element);
+    }
+}
+
+
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+
+
+    // iteration over immutable references (&T).
+    #[test]
+    fn into_iter_for_immutable_ref() {
+        let by_reference = vec![1, 2, 3];
+        let mut iter = v.iter();
+        while let Some(number) = iter.next() {
+            println!("{}", number);
+        }
+
+    }
+
+    #[test]
+    fn test_bad_add() {
+        assert_eq!(bad_add(1, 2), 3);
     }
 }

@@ -1,8 +1,13 @@
-fn change_string(any_string: &mut String){
-    any_string.push_str(",Testing");
+fn merge_two_string(s1: &String, s2: &String) -> String {
+    //Create a String from a literal string with String::from
+    let s1 = String::from(s1);
+    let s2 = String::from(s2);
+    let s3 = s1 + &s2; // s1 + s2 is not valid. 
+    // Why? we can only add a &str to a String; we can’t add two String values together
+    s3
 }
 // return string slice
-fn first_word(s: &String) -> &str {
+fn get_firstword_usingString(s: &String) -> &str {
     let bytes = s.as_bytes();
 
     for (i, &item) in bytes.iter().enumerate() {
@@ -12,7 +17,7 @@ fn first_word(s: &String) -> &str {
     }
     &s[..]
 }
-fn first_word_2(s: &str) -> &str {
+fn firstword_usingSlice(s: &str) -> &str {
     let bytes = s.as_bytes();
     for(i, &item) in bytes.iter().enumerate() {
         if item == b' ' {
@@ -30,50 +35,54 @@ fn modify_string(s: &mut String) {
 
 
 fn main() {
-    let str_hello = String::from("Hello world");
-    let hello = &str_hello[0..5];
-    let world = &str_hello[6..11];
-    println!("{}", hello);
-    println!("{}", world);
-    println!("{}", str_hello);
-    let hithere = "HI kevin. This is the Rust study place."; // String literal , &str
-    // Fixed sizem &str is a reference to a sequence of UTF-8 bytes. -> Immutable reference.
-    // its type is &'static str.  String literal is a string slice pointing to that specific point of the binary.
-
-    // &str is a simple string. 
-    // let my_var = "Hello" -> you create a &str. which is very fast.println!
-    // String is a pointer, with data on the heap.println!
-
-    let hit = &hithere[0..2];
-    println!("{}", hit);
-    let hit2 = hit;
-    println!("{}", hit2);
 }
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_first_word()
+    fn get_chracters_from_string_literal(){
+        let hithere = "HI kevin. This is the Rust study place."; // String literal , &str
+        let get_hi = &hithere[0..2];
+        assert_eq!(get_hi,"HI");
+    }
+
+    #[test]
+    fn get_string_from_String_object() {
+        let str_hello = String::from("Hello world");
+        let hello = &str_hello[0..5];
+        let world = &str_hello[6..11];
+        assert_eq!(hello, "Hello");
+        assert_eq!(world, "world");
+    }
+
+    #[test]
+    fn merge_string_return_Helloworld() {
+        let s1 = String::from("Hello");
+        let s2 = String::from(", world!");
+        assert_eq!(merge_two_string(&s1,&s2), "Hello, world!");
+    }
+    #[test]
+    fn test_get_firstword_usingString_success()
     {
         let mut s = String::from("hello world");
-        let word = first_word(&s); 
+        let word = get_firstword_usingString(&s); 
         assert_eq!(word, "hello");
     }
 
     #[test]
-    fn test_first_word_2()
+    fn test_get_firstword_usingSlice_success()
     {
         let mut s = String::from("hello world");
-        let word = first_word_2(&s);
+        let word = firstword_usingSlice(&s);
         assert_eq!(word, "hello");
     }
     #[test]
-    fn test_first_word_2_with_literal_string()
+    fn test_firstword_usingSlice_with_literal_string()
     {
         let literal_string = "hello world";
-        let word = first_word_2(literal_string);
-        let word2 = first_word_2(&literal_string[..]);
+        let word = firstword_usingSlice(literal_string);
+        let word2 = firstword_usingSlice(&literal_string[..]);
 
         assert_eq!(word, "hello");
         assert_eq!(word, "hello");
