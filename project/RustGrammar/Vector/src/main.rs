@@ -12,7 +12,11 @@ struct Album {
     pub title: String,
     pub artist: String,
 }
-
+struct Car {
+    engine: u32,
+    doors: u8,
+    name : String,
+}
 
 fn main() {
     let v = vec![1, 2, 3, 4, 5];
@@ -23,10 +27,6 @@ fn main() {
         Some(third) => println!("The third element is {}", third),
         None => println!("There is no third element."),
     }
-
-
-
-
     let v1: Vec<i32> = vec![1, 2, 3];
     let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
     for element in v2 {
@@ -38,11 +38,6 @@ fn main() {
     let new_one = [&old1[..2], &old2[..]].concat();
     println!("old1 {:?}", old1);
     println!("new_one : {:?}", new_one);
-
-
-    // std::vector<int> A{ 1, 2, 3, 4, 5};
-    // std::vector<int> B{ 10, 20, 30 };
-    // VecProxy<int> AB(A, B);  // ----> O(1). No copies performed.
 
 
     let mut albums_t = vec![
@@ -172,4 +167,30 @@ mod tests {
         assert_eq!(s, "batman");
     }
 
+    #[test]
+    fn test_merge_two_struct_vectors()
+    {
+        let car1 = Car {
+            engine : 2000,
+            doors: 4,
+            name: "Toyota".to_string()
+        };
+        let car2 = Car {
+            engine : 2000,
+            doors: 4,
+            name: "Hyundai".to_string()
+        };
+        let mut cars_vec = vec![car1, car2];
+
+        let car3 = Car {
+            engine : 3000,
+            doors: 6,
+            name : "Ford".to_string()
+        };
+        let trucks_vec = vec![car3];
+        cars_vec.extend(trucks_vec);
+
+        assert_eq!(cars_vec.len(), 3);
+    }
+    
 }

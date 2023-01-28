@@ -9,7 +9,15 @@ pub fn main(){
 
     // Get returns an Option<&V>
     let score = scores.get("Sunface");
-    println!("{:?}", score);
+    println!("{:?}", score.unwrap());
+
+    let mut hashmap_num = HashMap::new();
+    hashmap_num.insert("TestingA", 10);
+    hashmap_num.insert("TestingB", 20);
+    hashmap_num.insert("TestingC", 30);
+
+    let checkNum= hashmap_num.get("TestingA").unwrap();
+    println!("{}", checkNum);
 
 
     let user = person::User {

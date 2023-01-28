@@ -6,17 +6,6 @@ pub fn convert_hashmap_to_vec(hashmap: HashMap<String, String>){
     let vec1 = Vec::from_iter(hashmap.iter());
     println!("{:?}", vec1);
 }
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-// fn add_to_hash(h: &mut HashMap<&str, &str>) {
-//     h.insert("foo", "bar");
-// }
-
-// pub fn convert_hashmap_to_vec() -> Vec {
-
-// }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -26,11 +15,6 @@ mod tests {
         hashmap_str.insert("Algorithms".to_string(),"ncessary course".to_string());
         hashmap_str.insert("Interview Preparations".to_string(),"Need more work".to_string());
         hashmap_str
-    }
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
     }
     #[test]
     fn hashmap_lengh_successfully_count(){
@@ -45,18 +29,12 @@ mod tests {
         hashmap_num.insert("TestingB", 20);
         hashmap_num.insert("TestingC", 30);
 
-        //Get returns an Option<&V>
-        // let score = hashmap_num.get("TestingA");
-        // assert_eq!(score, 10);
+        let score = hashmap_num.get("TestingA");
+        let score2 = hashmap_num.get("TestingB").expect("20");
+        assert_eq!(score.unwrap(), &10);
+        assert_eq!(score2, &20);
     }
 
-    // #[test]
-    // fn hashmap_get_value_by_existing_key(){
-    //     let mut hashmap_str=base_seed_hashmap();
-    //     assert_eq!(hashmap_str.get(&"Data Structures"), Some("Required course"));
-    //     // assert_eq!(hashmap_str.get(&"Data Structures"), Some("Required course"))
-    //     // assert_eq!(hashmap_str.get(&"Data Structures"), Some("Required course"))
-    // }
     #[test]
     fn hashmap_for_in_valid(){
         let mut map = HashMap::new();

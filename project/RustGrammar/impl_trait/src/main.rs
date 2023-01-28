@@ -30,11 +30,6 @@ fn foo(arg: impl TraitTesting){
 }
 
 
-// fn bar() -> impl TraitTesting{
-
-// }
-
-
 fn main() {
     let v1 = vec![10, 20, 30];
     let v2 = vec![4, 5];

@@ -4,12 +4,7 @@ use std::fs;
 use std::fs::File;
 use std::io::{self, Read};
 use std::io::prelude::*;
-use std::error::Error;
 use std::io::BufReader;
-//
-//https://github.com/skerkour/kerkour.com/blob/main/2021/rust_file_encryption/src/main.rs
-//
-
 
 #[derive(Debug)]
 struct ErrorA;
@@ -89,6 +84,14 @@ fn main() {
     if let Err(e) = read_file_line_by_line("test.txt") {
         println!("{}", e); // "There is an error: Oops"
     }
+
+    let path_to_read = Path::new("new.txt");
+    let stdout_handle = Handle::stdout()?;
+    let handle = Handle::from_path(path_to_read)?;
+
+
+    // TODO : https://docs.rs/memmap/0.7.0/memmap/struct.Mmap.html#method.map
+
 }
 
 
