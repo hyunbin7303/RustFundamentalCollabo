@@ -1,1 +1,0 @@
-/Users/kevin/Software/KevinRust_Study/Rust_SelfDevelopment/project/RustGrammar/traits/target/debug/traits: /Users/kevin/Software/KevinRust_Study/Rust_SelfDevelopment/project/RustGrammar/traits/src/main.rs

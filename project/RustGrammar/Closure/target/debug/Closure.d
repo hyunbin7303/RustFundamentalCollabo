@@ -1,1 +1,0 @@
-/Users/kevin/Software/KevinRust_Study/Rust_SelfDevelopment/project/RustGrammar/Closure/target/debug/Closure: /Users/kevin/Software/KevinRust_Study/Rust_SelfDevelopment/project/RustGrammar/Closure/src/main.rs
