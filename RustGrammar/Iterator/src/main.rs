@@ -6,6 +6,27 @@ use itertools::Itertools;
 //https://stackoverflow.com/questions/27535289/what-is-the-correct-way-to-return-an-iterator-or-any-other-trait
 //https://depth-first.com/articles/2020/06/22/returning-rust-iterators/
 
+struct Counter {
+    count: u32,
+}
+impl Counter {
+    fn new() -> Counter {
+        Counter { count: 0 }
+    }
+}
+impl Iterator for Counter {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.count < 5 {
+            self.count += 1;
+            Some(self.count)
+        } else {
+            None
+        }
+    }
+}
+
 pub struct Foo {
     count: u8,
 }
@@ -25,7 +46,6 @@ impl Iterator for Foo {
         }
     } 
 }
-
 pub struct Repeater <'a> {
     iter: std::slice::Iter<'a, u8>,
 }
@@ -35,7 +55,6 @@ impl<'a> Iterator for Repeater<'a> {
         self.iter.next()
     }
 }
-
 pub struct Fibonacci
 {
     a: u32,
@@ -58,7 +77,6 @@ pub fn fibonacci_numbers() -> Fibonacci {
 
 
 #[derive(Debug)]
-
 pub struct Wrapper {
     value: u8,
 }
@@ -76,7 +94,6 @@ trait ContainerAnnotation<'a> {
     type ItemIterator: Iterator<Item=&'a u8>;
     fn items(&'a self) -> Self::ItemIterator; 
 }
-
 fn to_words<'a>(text: &'a str) -> impl Iterator<Item = &'a str> {
     text.split(' ')
 }
@@ -86,10 +103,43 @@ fn to_words_dynamic_dispatching<'a>(text: &'a str) -> Box<dyn Iterator<Item = &'
 fn num_impl_iterator(n: i32) -> impl Iterator<Item= i32> {
     (0..n).map(|x| x * 10)
 }
+struct SliceIter<'a, T> {
+    slice: &'a [T],
+    index: usize,
+}
+impl<'a, T> Iterator for SliceIter<'a, T> {
+    type Item = &'a T;
 
+    fn next(&mut self) -> Option<Self::Item> {
+        let item = self.slice.get(self.index)?;
+        self.index += 1;
+
+        Some(item)
+    }
+}
+fn iterator_over_slices() {
+
+}
+//Use the into_iter() function when you want to move, instead of borrow
+fn get_first_para_string(v : Vec<(String, usize)>) -> Vec<String> {
+    v.into_iter().map(|(account,score)| account).collect()
+}
 fn main() {
-    let it = (1..3).interleave(vec![-1, -2]);
-    itertools::assert_equal(it, vec![1, -1, 2, -2]);
+    // let text = "word1 word2 word3";
+    // println!("{}", to_words(text).take(2).count());
+
+    // Enumerate Testing 
+    // let v = vec![1; 10];
+    // for (pos, e) in v.iter().enumerate() {
+    //     println!("Element at position {}: {:?}", pos, e);
+    // }
+    // let items = vec!["kevin", "check", "Vector"];
+    // for (i, x) in items.iter().enumerate() {
+    //     println!("Item {} = {}", i, x);
+    // }
+
+    // let it = (1..3).interleave(vec![-1, -2]);
+    // itertools::assert_equal(it, vec![1, -1, 2, -2]);
 
     let i = Foo { count: 0 };
     let v = Vec::from_iter(i);                        
@@ -112,21 +162,19 @@ fn main() {
         println!("{}", element);
     }
 
-    println!("Fibonacchi testing ----");
-    for number in fibonacci_numbers() {
-        println!("{}", number);
-    }
+    // println!("Fibonacchi testing ----");
+    // for number in fibonacci_numbers() {
+    //     println!("{}", number);
+    // }
 }
 
 
 
 #[cfg(test)]
 mod tests {
-    // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
-
     #[test]
-    fn iterator_next_unwrap()
+    fn iterator_for_vec_num()
     {
         let v1 = vec![10, 20, 30];
         let mut v1_iter = v1.iter();
@@ -136,16 +184,17 @@ mod tests {
         assert_eq!(v1_iter.next(), None);
     }
     #[test]
-    fn iterator_demo()
+    fn iterator_for_slice()
     {
         let slice = &[10, 20, 30];
         let mut iter = slice.iter();
         assert_eq!(iter.next(), Some(&10));
         assert_eq!(iter.next(), Some(&20));
         assert_eq!(iter.next(), Some(&30));
+        assert_eq!(iter.next(), None);
     }
     #[test]
-    fn iterator_For_String() // Iter iterates over &T
+    fn iterator_for_String() // Iter iterates over &T
     {                        // Iteration over immutable references (&T).
         let names = vec!["Kevin", "Adam", "Julio", "Tudor"];
         let mut iter = names.iter(); 
@@ -195,5 +244,25 @@ mod tests {
         // for element in wrapping_container.items {
         //     println!("{}", element.value);
         // }
+    }
+    #[test]
+    fn fibonacchi_iter()
+    {
+        let check = fibonacci_numbers();
+        let mut iter = check.into_iter();
+        assert_eq!(iter.next(), Some(1));
+        assert_eq!(iter.next(), Some(1));
+        assert_eq!(iter.next(), Some(2));
+    }
+    #[test]
+    fn calling_next_directly() {
+        let mut counter = Counter::new();
+
+        assert_eq!(counter.next(), Some(1));
+        assert_eq!(counter.next(), Some(2));
+        assert_eq!(counter.next(), Some(3));
+        assert_eq!(counter.next(), Some(4));
+        assert_eq!(counter.next(), Some(5));
+        assert_eq!(counter.next(), None);
     }
 }
