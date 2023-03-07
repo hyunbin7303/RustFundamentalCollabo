@@ -1,5 +1,5 @@
 # Iterator Investigation
-Iterator in Rust allows us to go through each value as an immutable reference. In rust, we called it as `Iterator Trait` since it is an *An interface for dealing with iterators.* (according to the Rust-lang).
+Iterator in Rust allows us to go through each value as an immutable reference. In rust, we called it as `Iterator Trait` since it is an *An interface for dealing with iterators.* (according to the Rust-lang). Within Iterator trait, it has a `Next()` method that may return Some or None. 
 Iterator traits comes with multiple methods and this document explains how to use it and when to use it in the right circumstance. 
 
 ## iter, into_iter, iter_mut... What is the diference? 

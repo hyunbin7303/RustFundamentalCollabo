@@ -31,7 +31,6 @@ fn read_file_line_by_line(path: &str) -> Result<(), Box<dyn std::error::Error>>{
     }
     Ok(())
 }
-
 fn read_file_vec(path: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>>{
     let data = fs::read(path)?;
     Ok(data)
@@ -88,8 +87,6 @@ fn main() {
     let path_to_read = Path::new("new.txt");
     let stdout_handle = Handle::stdout()?;
     let handle = Handle::from_path(path_to_read)?;
-
-
     // TODO : https://docs.rs/memmap/0.7.0/memmap/struct.Mmap.html#method.map
 
 }
