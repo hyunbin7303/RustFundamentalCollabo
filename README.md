@@ -1,18 +1,17 @@
 # Rust_SelfDevelopment
 
 ## Table of Contents
-
-* Ownership
-* String
-* Serial_Deserial
+* String (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/String_understanding)
+* Ownership (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Ownership)
 * Some
-* Iterator 
+* Enum match (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/enum_match)
+* Iterator (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Iterator)
 * Lifetime Parameter
 * Generic lifetime Parameter
 * Enum Match
 * Closure
 * Box
-* Trait
+* Trait (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/traits)
 * Trait Objects
 * Vectors
 
