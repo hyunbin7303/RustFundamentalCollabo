@@ -1,6 +1,9 @@
 use std::fmt::Display;
 
-
+trait ContainerAnnotation<'a> {
+    type ItemIterator: Iterator<Item=&'a u8>;
+    fn items(&'a self) -> Self::ItemIterator; 
+}
 pub trait Summary {
     fn summarize(&self) -> String;
     fn summarize2(&self) -> String{
@@ -153,3 +156,4 @@ fn main() {
   println!("Return Tweet : {}", returns_summarize().summarize());
 
 }
+///https://blog.logrocket.com/rust-traits-a-deep-dive/

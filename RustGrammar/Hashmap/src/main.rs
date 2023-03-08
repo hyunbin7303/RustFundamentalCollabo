@@ -3,13 +3,19 @@ use std::env;
 mod person;
 pub fn main(){
     let mut scores = HashMap::new();
-    scores.insert("Sunface", 98);
-    scores.insert("Daniel", 95);
-    scores.insert("Ashley", 69);
-
+    scores.insert("Kevin", 98);
+    scores.insert("Macy", 95);
+    scores.insert("Julio", 79);
     // Get returns an Option<&V>
-    let score = scores.get("Sunface");
-    println!("{:?}", score.unwrap());
+    let score = scores.get("Kevin");
+    println!("Kevin Score : {:?}", score.unwrap());
+    let person_name = String::from("Macy");
+    let new_person: &i32 = if let Some(score) = scores.get(&person_name) {
+        score
+    }
+    else {
+        &0i32
+    }
 
     let mut hashmap_num = HashMap::new();
     hashmap_num.insert("TestingA", 10);
@@ -50,3 +56,16 @@ pub fn vec_to_hashmap2(){
     let english2spanish: HashMap<_, _> = english.iter().zip(spanish.iter()).collect();
     println!("{:?}", english2spanish);
 }
+pub fn get_userhashmap_search_by_active()
+{
+
+}
+
+
+/*
+Today Todo List
+//https://practice.rs/collections/hashmap.html
+1. hash map. Searching for the specific items? 
+2. Vector, Searching for the specific items?
+3. Algorithm Study. 
+ */

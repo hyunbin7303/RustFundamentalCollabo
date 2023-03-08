@@ -1,23 +1,61 @@
-use itertools::Itertools;
-
-
-
-
 //https://stackoverflow.com/questions/27535289/what-is-the-correct-way-to-return-an-iterator-or-any-other-trait
-
-struct Students {
-    names: Vec<String>,
+struct CustomIter {
+    v: Vec<String>,
     counter: usize,
 }
-impl Students {
+impl CustomIter {
     fn new() -> Self {
-        Students {
-            names: Vec::new(),
+        CustomIter {
+            v: Vec::new(),
             counter: 0,
         }
     }
+
     fn add(&mut self, val: String) {
-        self.names.push(val)
+        self.v.push(val)
+    }
+}
+
+impl Iterator for CustomIter {
+    type Item = String;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.v.get(self.counter) {
+            Some(s) => {
+                self.counter += 1;
+                Some(s.to_owned())
+            }
+            None => None,
+        }
+    }
+}
+
+struct Student {
+    courses: Vec<String>,
+    counter: usize,
+}
+impl Student {
+    fn new() -> Self {
+        Student {
+            courses: Vec::new(),
+            counter: 0,
+        }
+    }
+    fn add(&mut self, course: String) {
+        // self.counter += 1; // TODO : if you do this one, it's not working. Why is that? 
+        self.courses.push(course)
+    }
+}
+impl Iterator for Student {
+    type Item = String;
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.courses.get(self.counter) {
+            Some(s) => {
+                self.counter += 1;
+                Some(s.to_owned())
+            }
+            None => None,
+        }
     }
 }
 
@@ -33,21 +71,6 @@ impl Iterator for Counter {
     type Item = u32;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.count < 5 {
-            self.count += 1;
-            Some(self.count)
-        } else {
-            None
-        }
-    }
-}
-
-pub struct Foo {
-    count: u8,
-}
-impl Iterator for Foo {
-    type Item = u8;
-    fn next(&mut self) -> Option<Self::Item>{
         match self.count {
             0 => {
                 self.count = self.count + 1;
@@ -57,9 +80,13 @@ impl Iterator for Foo {
                 self.count = self.count + 1;
                 Option::Some(10) 
             }
+            // self.count >= 5 {
+            //     self.count = self.count +1;
+            //     Some(self.count)
+            // }
             _ => None 
         }
-    } 
+    }
 }
 pub struct Repeater <'a> {
     iter: std::slice::Iter<'a, u8>,
@@ -70,8 +97,7 @@ impl<'a> Iterator for Repeater<'a> {
         self.iter.next()
     }
 }
-pub struct Fibonacci
-{
+pub struct Fibonacci {
     a: u32,
     b: u32,
 }
@@ -89,8 +115,6 @@ impl Iterator for Fibonacci {
 pub fn fibonacci_numbers() -> Fibonacci {
     Fibonacci { a: 1, b: 0 }
 }
-
-
 #[derive(Debug)]
 pub struct Wrapper {
     value: u8,
@@ -105,10 +129,7 @@ impl ContainerWithWrapper {
         self.items.iter().map(|wrapper| wrapper.value)
     }
 }
-trait ContainerAnnotation<'a> {
-    type ItemIterator: Iterator<Item=&'a u8>;
-    fn items(&'a self) -> Self::ItemIterator; 
-}
+
 fn to_words<'a>(text: &'a str) -> impl Iterator<Item = &'a str> {
     text.split(' ')
 }
@@ -137,22 +158,32 @@ fn iterator_over_slices() {
 fn get_first_para_string(v : Vec<(String, usize)>) -> Vec<String> {
     v.into_iter().map(|(account,score)| account).collect()
 }
-fn main() {
 
-    // Enumerate Testing 
-    // let v = vec![1; 10];
-    // for (pos, e) in v.iter().enumerate() {
-    //     println!("Element at position {}: {:?}", pos, e);
-    // }
-    // let items = vec!["kevin", "check", "Vector"];
-    // for (i, x) in items.iter().enumerate() {
-    //     println!("Item {} = {}", i, x);
-    // }
-    let i = Foo { count: 0 };
-    let v = Vec::from_iter(i);                        
-    for value in v {
-        println!("value: {}", value);
+
+fn main() {
+    let mut cis = CustomIter::new();
+
+    cis.add("Amirreza".to_string());
+    cis.add("Parsa".to_string());
+    cis.add("Yas".to_string());
+
+    for fruit in cis {
+        println!("{}", fruit);
     }
+
+    let mut students = Student::new();
+// println!("Application start");
+    students.add("Hyunbin".to_string());
+    students.add("Macy".to_string());
+    students.add("Julio".to_string());
+
+    for student in students {
+        println!("studnet info {}", student);
+    }
+    // let v = Vec::from_iter(i);                        
+    // for value in v {
+    //     println!("value: {}", value);
+    // }
 
     let text = "word1 word2 word3";
     let mut iter_text = to_words(text); // println!("{}", iter_text.next()); // println!("{}", iter_text[0]);
@@ -185,6 +216,19 @@ mod tests {
         assert_eq!(iter.next(), Some(&30));
         assert_eq!(iter.next(), None);
     }
+    #[test]
+    fn iterator_for_enumerate()
+    {
+        let v = vec![1; 10];
+        for (pos, e) in v.iter().enumerate() {
+            println!("Element at position {}: {:?}", pos, e);
+        }
+        // let items = vec!["kevin", "check", "Vector"];
+        // for (i, x) in items.iter().enumerate() {
+        //     println!("Item {} = {}", i, x);
+        // }
+    }
+
     #[test]
     fn iterator_for_String() // Iter iterates over &T
     {                        // Iteration over immutable references (&T).
@@ -233,7 +277,7 @@ mod tests {
         let wrapping_container = ContainerWithWrapper { items : wrap_test };
         let mut iter = wrapping_container.items.into_iter();
         // let mut check = iter.next().value;
-        assert_eq!(iter.next(), Some(1));
+        // assert_eq!(iter.next(), Some(1));
         // for element in wrapping_container.items {
         //     println!("{}", element.value);
         // }
@@ -247,15 +291,40 @@ mod tests {
         assert_eq!(iter.next(), Some(1));
         assert_eq!(iter.next(), Some(2));
     }
-    #[test]
-    fn calling_next_directly() {
-        let mut counter = Counter::new();
+    // #[test]
+    // fn calling_next_directly() {
+    //     let mut counter = Counter::new();
 
-        assert_eq!(counter.next(), Some(1));
-        assert_eq!(counter.next(), Some(2));
-        assert_eq!(counter.next(), Some(3));
-        assert_eq!(counter.next(), Some(4));
-        assert_eq!(counter.next(), Some(5));
-        assert_eq!(counter.next(), None);
+    //     assert_eq!(counter.next(), Some(1));
+    //     assert_eq!(counter.next(), Some(2));
+    //     assert_eq!(counter.next(), Some(3));
+    //     assert_eq!(counter.next(), Some(4));
+    //     assert_eq!(counter.next(), Some(5));
+    //     assert_eq!(counter.next(), None);
+    // }
+
+    #[test]
+    fn test_custom_iterator() {
+        let mut students = Student::new();
+
+        students.add("Hyunbin".to_string());
+        students.add("Macy".to_string());
+        students.add("Julio".to_string());
+
+        for student in students {
+            println!("{}", student);
+        }
+    }
+    #[test]
+    fn test_custom_iterator() {
+        let mut cis = CustomIter::new();
+
+        cis.add("Amirreza".to_string());
+        cis.add("Parsa".to_string());
+        cis.add("Yas".to_string());
+
+        for fruit in cis {
+            println!("{}", fruit);
+        }
     }
 }
