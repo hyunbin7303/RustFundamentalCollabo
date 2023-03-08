@@ -1,17 +1,17 @@
 # Rust_SelfDevelopment
 
 ## Table of Contents
-* String (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/String_understanding)
-* Ownership (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Ownership)
-* Some
-* Enum match (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/enum_match)
-* Iterator (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Iterator)
-* Lifetime Parameter
-* Generic lifetime Parameter
-* Enum Match
-* Closure
-* Box
-* Trait (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/traits)
+* [String](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/String_understanding)
+* [Ownership](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Ownership)
+* [Some]
+* [Enum match](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/enum_match)
+* [Iterator] (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Iterator)
+* [Lifetime Parameter]
+* [Generic lifetime Parameter]
+* [Enum Match]
+* [Closure]
+* [Box]
+* [Trait](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/traits)
 * Trait Objects
 * Vectors
 
