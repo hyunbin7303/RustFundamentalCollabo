@@ -1,9 +1,5 @@
 #[derive(Debug)] enum Champ { Garen, Nami, Vayne }
 #[derive(Debug)] enum Day { Monday, Tuesday, Wednesday }
-#[derive(Debug)]
-enum GamePlayOption {
-
-}
 struct QuitMessage; // unit struct
 struct MoveMessage {
     x: i32,

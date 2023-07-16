@@ -5,7 +5,7 @@ The purpose of this repository is to study the grammar and syntax of Rust and fi
 * [String](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/String_understanding)
 * [Ownership](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Ownership)
 * [Some](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/testing_some)
-* [Generics](Todo)
+* [Generics](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Generics)
 * [Enum match](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/enum_match)
 * [Iterator] (https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Iterator)
 * [Lifetime Parameter]TODO
@@ -19,8 +19,7 @@ The purpose of this repository is to study the grammar and syntax of Rust and fi
 * [Associated types]TODO
 * [Dispatching](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Dispatching)
 * [Type Alias](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/type_alias)
-* [Thread]TODO
-* [Async/Await]TODO
+
 ### Sample Word Finder Application for studying/investigating Rust Grammar!
 In Progress..
 Basic functionalities using File read/write and creating Json files ....
@@ -30,6 +29,15 @@ Basic functionalities using File read/write and creating Json files ....
 * Rust by Examples (https://doc.rust-lang.org/rust-by-example/index.html)
 * Rust Cookbook (https://rust-lang-nursery.github.io/rust-cookbook/)
 * Easy rust (https://dhghomon.github.io/easy_rust/Chapter_1.html)
+
+
+### Future Plan
+* [Thread]TODO
+* [Async/Await]TODO
+* Networking(TCP/UDP)
+* System Programming
+* Rust Algorithm Updates
+* Rust Data structure
 
 ## Contributing
 There is no specific contributing guide line yet so if you want to add up more codes for studying Rust, please create a ticket and request PR! if you have questions? Anything you would like to study together? Create a discussions to talk about all sorts of topics in regards to Rust Grammar(Or Library)! 

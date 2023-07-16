@@ -1,3 +1,6 @@
+//Source Ref from : 
+//https://blog.logrocket.com/rust-traits-a-deep-dive/
+
 use std::fmt::Display;
 
 trait ContainerAnnotation<'a> {
@@ -15,6 +18,7 @@ pub trait Summary {
         return format!("(Read More from {}...)", self.summarize_author());
     }
 }
+
 // Defining a Details trait by defining the functionality it should include
 pub trait Details {
     fn description(&self) -> String;
@@ -67,16 +71,15 @@ impl Summary for Tweet {
         return format!("@{}", self.username);
     }
 }
-  // Implementing an in-built trait ToString on the Dog struct
+
 // Implementing the Details trait on Movie struct
-impl Details for Movie{
+impl Details for Movie {
 
   // Method returns an overview of the movie
   fn description(&self) -> String{
     return format!("{}, released in {}, is a {} movie directed by {}.", self.title, self.release_year, self.genre, self.director);
   }
-
-  // Method returns the number of years between the writing year of this shot i.e.
+  // Method returns the number of years between the writing year of this shot.
   // 2020 and the release year of the movie
   fn years_since_release(&self) -> u32{
     return 2020 - self.release_year;
@@ -99,18 +102,7 @@ fn returns_summarize() -> impl Summary {
 
 
 
-struct Pair<T> {
-    x: T,
-    y: T,
-}
-impl<T> Pair<T> {
-    fn new(x: T, y: T) -> Self{
-        Self {x,y}
-    }
-} 
-impl<T: Display + PartialOrd> Pair<T> {
-    
-}
+
 fn main() {
   let movie1 = Movie{
       title: "Titanic".to_string(),
@@ -156,4 +148,3 @@ fn main() {
   println!("Return Tweet : {}", returns_summarize().summarize());
 
 }
-///https://blog.logrocket.com/rust-traits-a-deep-dive/

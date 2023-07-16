@@ -1,5 +1,6 @@
 # Vector
-
+* Re-sizable arrays
+* Heap alloc......
 
 ## Vector Map function
 The `map` method is useful to iterate the vector.
