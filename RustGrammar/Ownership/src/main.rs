@@ -18,9 +18,9 @@ mod model {
                 Champ::Darius => f.write_str("Darius")
             }
         }
-        
+
     }
- 
+
     pub struct Hands {
         left: Option<Champ>,
         right : Option<Champ>
@@ -53,9 +53,9 @@ mod model {
                 println!("{} hand is not holding.", which);
             }
         }
-    } 
+    }
 }
- 
+
 fn gives_ownership() -> String {             // gives_ownership will move its
     let some_string = String::from("Giving ownership"); // some_string comes into scope
     some_string                              // some_string is returned and
@@ -76,6 +76,9 @@ fn add_up_string(mut mainstr: String){
 fn get_byte_length(strliteral : &str) -> usize {
     strliteral.bytes().len()
 }
+// fn get_String_length(str: String) -> usize {
+//     str.bytes().len()
+// }
 #[derive(Debug)]
 struct DropMe;
 impl Drop for DropMe {
@@ -101,11 +104,16 @@ fn vec_pass_by_reference(vec: &Vec<i32>) -> bool {
 
 
 fn main() {
-    let firstOwner = String::from("FirstOwner String"); // String is the Heap Allocation
-    let secondOwner = firstOwner; // Moving ownership
+
+    let first_owner = String::from("FirstOwner String");
+    let ref_first_owner = &first_owner;
+    let ref_second_owner = &first_owner;
+    println!("{} {} {}", first_owner, ref_first_owner, ref_second_owner);
+
+    let second_owner = first_owner; // Moving ownership
     // println!("x={}", firstOwner); -- This gives an error because the String data type in Rust does not implement the Copy trait,
     // its ownership gets transferred to SecondOwner.
-    println!("second Owner={}", secondOwner);
+    println!("second Owner={}", second_owner);
 
     let mut s = String::from("Testing Kevin"); // S owns the Testing Kevin.
     println!("First time s:{}", s);
@@ -114,9 +122,9 @@ fn main() {
 
     let s = String::from("Main string");
     print_main_owner(s); // pass ownership to print_main_owner and ownership is over in the method.
-    // println!("{}", s);  --> return error since s doesn't valid anymore. 
+    // println!("{}", s);  --> return error since s doesn't valid anymore.
 
-    // Fix above issues by passing the ref. 
+    // Fix above issues by passing the ref.
     let s = String::from("Main string - 2");
     print_main_owner_using_ref(&s);
     let mut s = String::from("Mutable string");
@@ -132,7 +140,7 @@ fn main() {
     println!("Objecting handling testing ----");
     let mut hands = Hands::new();
     hands.report();
-    hands = hands.juggle(); 
+    hands = hands.juggle();
     hands.report();
 
     println!("Testing ----");
@@ -167,6 +175,7 @@ mod tests {
         let result = vec_pass_by_reference(&vec);
         assert_eq!(result, true);
     }
+
     #[test]
     fn test_get_byte_length()
     {
@@ -176,5 +185,9 @@ mod tests {
         assert_eq!(num, 9);
     }
 
+    #[test]
+    fn test_get_byte_length_String() {
+        let mut s = String::from("Mutable string");
 
+    }
 }

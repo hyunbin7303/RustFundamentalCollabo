@@ -1,8 +1,9 @@
+use std::{collections, fmt};
 fn merge_two_string(s1: &String, s2: &String) -> String {
     //Create a String from a literal string with String::from
     let s1 = String::from(s1);
     let s2 = String::from(s2);
-    let s3 = s1 + &s2; // s1 + s2 is not valid. 
+    let s3 = s1 + &s2; // s1 + s2 is not valid.
     // Why? we can only add a &str to a String; we can’t add two String values together
     s3
 }
@@ -32,9 +33,15 @@ fn modify_string(s: &mut String) {
     s.push_str(", By Kevin Park");
 }
 
-
-
 fn main() {
+    let mut s1 = String::with_capacity(25);
+    println!("Size of the String: {}", std::mem::size_of_val(&s1));
+    println!("{:p}", s1.as_ptr());
+    s1.push_str("Hello");
+    println!("Size in the stack: {}", std::mem::size_of_val(&s1));
+    let string_ptr= &s1;
+    println!("String pointer in the stak: {:p}", string_ptr);
+    println!("Heap pointer to the string content: {:p}", s1.as_ptr());
 }
 #[cfg(test)]
 mod tests {
@@ -66,7 +73,7 @@ mod tests {
     fn test_get_firstword_usingString_success()
     {
         let mut s = String::from("hello world");
-        let word = get_firstword_usingString(&s); 
+        let word = get_firstword_usingString(&s);
         assert_eq!(word, "hello");
     }
 
