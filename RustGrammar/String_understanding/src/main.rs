@@ -34,6 +34,10 @@ fn modify_string(s: &mut String) {
 }
 
 fn main() {
+    let mut string_check = String::from("ValueCheck");
+    println!("Size of the String: {}", std::mem::size_of_val(&string_check));
+
+
     let mut s1 = String::with_capacity(25);
     println!("Size of the String: {}", std::mem::size_of_val(&s1));
     println!("{:p}", s1.as_ptr());
