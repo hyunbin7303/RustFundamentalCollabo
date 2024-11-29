@@ -1,17 +1,18 @@
 // extern crate File;
-
 use std::fs;
 use std::fs::File;
-use std::io::{self, Read};
 use std::io::prelude::*;
 use std::io::BufReader;
+use std::io::{self, Read};
+use std::os::unix::fs::FileExt;
+use std::path::Path;
 
 #[derive(Debug)]
 struct ErrorA;
 
 #[derive(Debug)]
 struct ErrorB;
-fn read_file_string(path: &str) -> Result<String,Box<dyn std::error::Error>>{
+fn read_file_string(path: &str) -> Result<String, Box<dyn std::error::Error>> {
     let data = fs::read_to_string(path)?;
     Ok(data)
 }
@@ -22,16 +23,16 @@ fn read_file_string_from_file(path: &str) -> Result<String, io::Error> {
     Ok(s)
 }
 
-fn read_file_line_by_line(path: &str) -> Result<(), Box<dyn std::error::Error>>{
+fn read_file_line_by_line(path: &str) -> Result<(), Box<dyn std::error::Error>> {
     let file = File::open(path)?;
     let reader = BufReader::new(file);
 
-    for line in reader.lines(){
+    for line in reader.lines() {
         println!("{}", line?);
     }
     Ok(())
 }
-fn read_file_vec(path: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>>{
+fn read_file_vec(path: &str) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     let data = fs::read(path)?;
     Ok(data)
 }
@@ -67,14 +68,21 @@ fn read_username_from_file(path: &str) -> Result<String, io::Error> {
 //     Ok(())
 // }
 
-
 // the Box<dyn Error> type os called a trait object
 // allows for values of different types.println!
 
 fn main() {
+    let mut file = fs::File::create("output.txt").unwrap();
+    file.write_all(b"Hello World \n Kevin park rust file writing test.")
+        .unwrap();
+
+    let mut file = fs::File::open("output.txt").unwrap();
+    let mut s = String::new();
+    file.read_to_string(&mut s).unwrap();
+    s.split_whitespace().for_each(|word| println!("{:?}", word));
 
     let s1 = read_file_string("test.txt");
-    println!("{}", s1.unwrap());
+    println!("Read text file :{}", s1.unwrap());
 
     let s2 = read_file_string_from_file("test.txt");
     println!("{}", s2.unwrap());
@@ -85,16 +93,10 @@ fn main() {
     }
 
     let path_to_read = Path::new("new.txt");
-    let stdout_handle = Handle::stdout()?;
-    let handle = Handle::from_path(path_to_read)?;
-    // TODO : https://docs.rs/memmap/0.7.0/memmap/struct.Mmap.html#method.map
-
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    // TODO : Make some test cases. 
-    
+    // TODO : Make some test cases.
 }
