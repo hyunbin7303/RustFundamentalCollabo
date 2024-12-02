@@ -1,17 +1,17 @@
 mod word;
 
+use std::collections::HashMap;
 use std::env::args;
 use std::process;
-use WordFinder::config_handle::{ parse_config };
+use WordFinder::config_handle::parse_config;
 use WordFinder::file_util::*;
-use std::collections::HashMap;
 extern crate serde_json;
-use serde_json::{Value, Map};
+use serde_json::{Map, Value};
 
-// Use the argument parsing as well. 
+// Use the argument parsing as well.
 //https://doc.rust-lang.org/book/ch12-03-improving-error-handling-and-modularity.html
 
-// Use Function/ FnONce, 
+// Use Function/ FnONce,
 //https://stackoverflow.com/questions/36390665/how-do-you-pass-a-rust-function-as-a-parameter
 
 impl Sentence {
@@ -22,8 +22,12 @@ impl Sentence {
     }
 }
 impl Default for word::Word {
-    fn default () -> word::Word {
-        word::Word{letter: "".to_string(), meaning: "".to_string(), synonyms: Vec::new() }
+    fn default() -> word::Word {
+        word::Word {
+            letter: "".to_string(),
+            meaning: "".to_string(),
+            synonyms: Vec::new(),
+        }
     }
 }
 
@@ -34,9 +38,10 @@ impl From<Vec<word::Word>> for Sentence {
 }
 
 pub fn read_jsonfile() {
-
-    let data = std::fs::read_to_string("./simple_english_dictionary.json").expect("Unable to read file");
-    let json: serde_json::Value = serde_json::from_str(&data).expect("JSON does not have correct format.");
+    let data =
+        std::fs::read_to_string("./simple_english_dictionary.json").expect("Unable to read file");
+    let json: serde_json::Value =
+        serde_json::from_str(&data).expect("JSON does not have correct format.");
     // let map: Map<String, String> = serde_json::from_value(json).unwrap();
     // json[0]
 
@@ -49,17 +54,14 @@ struct Sentence {
     words: Vec<word::Word>,
 }
 
-
 // fn search_case()
 
-
 fn main() -> std::io::Result<()> {
-
-    //Testing 
+    //Testing
     //read_jsonfile();
 
-    let args_vec : Vec<String> = args().collect();
-    let config = parse_config(&args_vec); 
+    let args_vec: Vec<String> = args().collect();
+    let config = parse_config(&args_vec);
     if config.query == "--help" || config.query == "-h" || config.query == "-H" {
         println!("Command list. ");
         println!("Type command for the file handling.");
@@ -78,16 +80,12 @@ fn main() -> std::io::Result<()> {
         //Open the file and search for the word
 
         // Change the config model
-        
-
 
         match config.search_word {
             Some(x) => println!("{}", words[&x]),
-            None => println!("Nothing for the search word")
+            None => println!("Nothing for the search word"),
         };
-        
-    }
-    else if config.query == "search" || config.query == "-s" || config.query == "-S" {
+    } else if config.query == "search" || config.query == "-s" || config.query == "-S" {
         if config.search_word == None {
             println!("Please type search word.");
             process::exit(1);
@@ -98,37 +96,39 @@ fn main() -> std::io::Result<()> {
             let contents = read_textfile(&config.filename);
             println!("{}", contents);
             let search_word = &config.search_word.unwrap();
-            let index:Option<usize> = contents.find(search_word).map(|i| i+1);
+            let index: Option<usize> = contents.find(search_word).map(|i| i + 1);
             println!("first Index number : {}", index.unwrap());
-            let index_vec: Vec<_> = contents.match_indices(search_word).map(|(i, _)| i+1).collect();
+            let index_vec: Vec<_> = contents
+                .match_indices(search_word)
+                .map(|(i, _)| i + 1)
+                .collect();
             println!("All index numbers {:?}", index_vec);
 
-            // TODO : Find the specific lines of the string. 
-            // Display the line numbers to the screen. 
-            
-        }else{
+            // TODO : Find the specific lines of the string.
+            // Display the line numbers to the screen.
+        } else {
             println!("File Doesn't exist. Please check the file name.");
         }
+    } else if config.query == "csv-handler" {
+        parse_csv_document(&config.filename);
+        let is_exist = check_file_exist(&config.filename);
+        if !is_exist {
+            println!("File doesn't exist. Please check the file name.");
+            process::exit(1);
+        }
     }
-    else if config.query == "csv-handler" {
-      parse_csv_document(&config.filename);
-      let is_exist = check_file_exist(&config.filename);
-      if !is_exist {
-        println!("File doesn't exist. Please check the file name.");
-        process::exit(1);
-      }
-
-    }
-    // TODO. Need to test this feature as well! 
-    else if config.query == "print-line"{
+    // TODO. Need to test this feature as well!
+    else if config.query == "print-line" {
         println!("Testing. Just printout the first line.");
         print_line_at(&config.filename, 1);
-    }
-    else if config.query == "search-sentence" {
-        println!("Searching for the word {} in the text", config.search_word.unwrap());
-      //  let search = config.search_word.unwrap();
+    } else if config.query == "search-sentence" {
+        println!(
+            "Searching for the word {} in the text",
+            config.search_word.unwrap()
+        );
+        //  let search = config.search_word.unwrap();
         let is_exist = check_file_exist(&config.filename);
-        if !is_exist{
+        if !is_exist {
             println!("File doesn't exist. ");
             process::exit(1);
         }
@@ -137,20 +137,17 @@ fn main() -> std::io::Result<()> {
         for s in split {
             println!("{}", s)
         }
-    }
-    else if config.query == "create" || config.query == "-c" || config.query == "-C" {
+    } else if config.query == "create" || config.query == "-c" || config.query == "-C" {
         let is_exist = check_file_exist(&config.filename);
         if is_exist {
             println!("File Already Exists.");
-        }else{
+        } else {
             if let Err(e) = generate_txtfile(&config.filename) {
                 println!("{}", e); // "There is an error: Oops"
                 process::exit(1);
             }
-            
         }
-    }
-    else if config.query == "read" || config.query == "-r" || config.query == "-R" {
+    } else if config.query == "read" || config.query == "-r" || config.query == "-R" {
         let is_exist = check_file_exist(&config.filename);
         if is_exist {
             if let Err(e) = read_textfile_print(&config.filename) {
@@ -160,32 +157,27 @@ fn main() -> std::io::Result<()> {
         } else {
             println!("File doesn't exist.");
         }
-    }
-    else if config.query == "delete" || config.query == "-d" || config.query == "-D" {
+    } else if config.query == "delete" || config.query == "-d" || config.query == "-D" {
         let is_exist = check_file_exist(&config.filename);
         if is_exist {
             if let Err(e) = remove_textfile(&config.filename) {
-                println!("{}", e); 
+                println!("{}", e);
                 process::exit(1);
             }
-        }else{
+        } else {
             println!("File doesn't exist.");
         }
-    }
-    else{
+    } else {
         println!("Please check your input.");
     }
     Ok(())
 }
 
-
-
-
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
-    fn it_works(){
+    fn it_works() {
         let txt = "hello world kevin";
         // assert_eq!(txt, result);
         read_jsonfile();

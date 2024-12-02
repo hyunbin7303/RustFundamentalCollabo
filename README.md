@@ -27,6 +27,9 @@ The purpose of this repository is to study the grammar and syntax of Rust and fi
 * [Dispatching](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/Dispatching)
 * [Type Alias](https://github.com/hyunbin7303/RustFundamentalCollabo/tree/main/RustGrammar/type_alias)
 
+### Rust General principles
+* Every .rs file (except for main.rs, lib.rs, and other crate root files) should have exactly one mod declaration.
+
 
 
 ### Good Study link/reference
