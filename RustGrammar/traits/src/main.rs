@@ -1,73 +1,11 @@
 //Source Ref from :
 //https://blog.logrocket.com/rust-traits-a-deep-dive/
-
+use traits::{movie::{Details, Movie}, tweet::{NewsArticle, Summary, Tweet}};
 trait ContainerAnnotation<'a> {
     type ItemIterator: Iterator<Item = &'a u8>;
     fn items(&'a self) -> Self::ItemIterator;
 }
-pub trait Summary {
-    fn summarize(&self) -> String;
-    fn summarize_author(&self) -> String;
-    fn summarize_author_info(&self) -> String {
-        return format!("(Read More from {}...)", self.summarize_author());
-    }
-}
-
 // Defining a Details trait by defining the functionality it should include
-pub trait Details {
-    fn description(&self) -> String;
-    fn years_since_release(&self) -> u32;
-}
-pub struct NewsArticle {
-    pub author: String,
-    pub headline: String,
-    pub content: String,
-}
-pub struct Tweet {
-    pub username: String,
-    pub content: String,
-    pub retweet: bool,
-    pub reply: bool,
-}
-pub struct Movie {
-    title: String,
-    director: String,
-    release_year: u32,
-    genre: String,
-}
-
-impl Summary for NewsArticle {
-    fn summarize(&self) -> String {
-        return format!("{}, by {}", self.headline, self.author);
-    }
-    fn summarize_author(&self) -> String {
-        return format!("@{}", self.author);
-    }
-}
-impl Summary for Tweet {
-    fn summarize(&self) -> String {
-        return format!("{}, by {}", self.username, self.content);
-    }
-    fn summarize_author(&self) -> String {
-        return format!("@{}", self.username);
-    }
-}
-
-// Implementing the Details trait on Movie struct
-impl Details for Movie {
-    // Method returns an overview of the movie
-    fn description(&self) -> String {
-        return format!(
-            "{}, released in {}, is a {} movie directed by {}.",
-            self.title, self.release_year, self.genre, self.director
-        );
-    }
-    // Method returns the number of years between the writing year of this shot.
-    // 2020 and the release year of the movie
-    fn years_since_release(&self) -> u32 {
-        return 2020 - self.release_year;
-    }
-}
 pub fn notify(item: &impl Summary) {
     println!("Breaking news ! {}", item.summarize());
 }
@@ -78,7 +16,7 @@ pub fn notify_generic<T: Summary>(item: &T) {
 pub fn notify_generic<T: Summary>(item1: &T, item2: &T) {
     println!("Breaking news ! {}", item.summarize());
 }*/
-fn returns_summarize() -> impl Summary {
+pub fn returns_summarize() -> impl Summary {
     Tweet {
         username: String::from("Tweet Name"),
         content: String::from("Tweet Content"),
@@ -124,14 +62,6 @@ fn main() {
         headline: String::from("Head Line"),
         content: String::from("Content of the head line"),
     };
-    /*
-        let dog = Animal::Dog {
-            name: "Frodo".to_string(),
-            age: 3,
-            owner: "Maryam".to_string(),
-        };
-        println!("{}", dog.to_string());
-    */
     println!("Tweet Summary : {}", tweet.summarize());
     println!("Tweet username : {}", tweet.summarize_author_info());
     println!("News Article Summary : {}", articles.summarize());
