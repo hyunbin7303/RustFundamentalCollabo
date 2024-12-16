@@ -1,6 +1,6 @@
 # Traits
 * Trait is very similar to interface in Java or Dotnet.
-* `A trait defines the functionality a particular type has and can share with other types. We can use traits to define shared behavior in an abstract way.` 
+* `A trait defines the functionality a particular type has and can share with other types. We can use traits to define shared behavior in an abstract way.`
 ## Trait Basic use
 
 ```
@@ -15,7 +15,7 @@ pub trait A {
 struct Person { FirstName: String, LastName: String }
 
 impl A for Person {
-    
+
 }
 ```
 ## Traits as Parameters
@@ -38,10 +38,10 @@ With the two trait bound specified, the body of notify can call summarize and us
 ## Clearer trait bounds with where Clauses
 
 Replace this
-`fn some_function<T: Display + Clone, U: Clone + Debug>(t: &T, u: &U) -> i32 {` 
+`fn some_function<T: Display + Clone, U: Clone + Debug>(t: &T, u: &U) -> i32 {`
 to this,
 ```
-fn some_function<T,U>(t: &T, u: &U) -> i32 
+fn some_function<T,U>(t: &T, u: &U) -> i32
 where
     T: Display + Clone,
     U: Clone + Debug,
@@ -49,7 +49,7 @@ where
 ```
 
 ## Returning types that implement traits
-Using `impl Trait` syntax for the return. 
+Using `impl Trait` syntax for the return.
 ```
 fn returns_summarizable() -> impl Summary{
     Tweet {
@@ -62,3 +62,9 @@ fn returns_summarizable() -> impl Summary{
 ## using Trait bounds to conditionally implement methods.
 * By using a trait bound with an impl block that uses generic type parameters, we can implement methods conditionally for types that implement the specified traits.
 
+
+
+
+## Things to note
+* The placeholder to use the `Display` trait is `{}`
+* The placeholder to use the `Debug` trait is `{:?}` or `{:#?}`

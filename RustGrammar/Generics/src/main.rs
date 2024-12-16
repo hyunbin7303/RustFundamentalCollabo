@@ -17,9 +17,9 @@ impl<T> Pair<T> {
     fn new(x: T, y: T) -> Self{
         Self {x,y}
     }
-} 
+}
 impl<T: Display + PartialOrd> Pair<T> {
-    
+
 }
 
 // Generic with bound

@@ -1,3 +1,5 @@
+use core::fmt;
+
 
 pub struct Movie {
     pub title: String,
@@ -20,5 +22,11 @@ impl Details for Movie {
     // 2020 and the release year of the movie
     fn years_since_release(&self) -> u32 {
         return 2020 - self.release_year;
+    }
+}
+
+impl fmt::Display for Movie {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Movie Title:{}, Director:{}", self.title, self.director)
     }
 }

@@ -1,3 +1,8 @@
+use album::{Album, Albums};
+use password::Password;
+
+mod album;
+mod password;
 const OKAY_CHARACTERS: &str = "1234567890+- ";
 
 fn math(input: &str)-> i32 {
@@ -40,7 +45,7 @@ fn math(input: &str)-> i32 {
             }
         }
     } ;
-    result_vec.push(push_string); 
+    result_vec.push(push_string);
     let mut total = 0;
     let mut adds = true;
     let mut math_iter = result_vec.into_iter();
@@ -49,7 +54,7 @@ fn math(input: &str)-> i32 {
             if entry.chars().count() % 2 == 1 {
                 adds = match adds {
                     true => false,
-                    false => true    
+                    false => true
                 };
                 continue;
             }else {
@@ -67,12 +72,31 @@ fn math(input: &str)-> i32 {
 
 
 fn main() {
+    let first_album = Album {
+        title: "Desperado".into(),
+        artist: "The Beatles".into(),
+    };
+    println!("{}", first_album);
+    println!("Creating Own Albums struct in order to display Album in vec.");
+    let albums = Albums(vec![
+        first_album,
+        Album {
+            title: "Dark Side of the Moon".into(),
+            artist: "Kevin Park".into(),
+        },
+    ]);
+
+    let secure_pwd= Password("Password#1234".to_string());
+    println!("Safe pwd : {}", secure_pwd);
+
+
+
     let value = math("1 + 1");
     println!("The result value : {}", value);
 }
 
 
-#[cfg(test)] 
+#[cfg(test)]
 mod tests {
     use super::*;
 

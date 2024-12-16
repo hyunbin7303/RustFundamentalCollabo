@@ -1,6 +1,8 @@
 //Source Ref from :
 //https://blog.logrocket.com/rust-traits-a-deep-dive/
 use traits::{movie::{Details, Movie}, tweet::{NewsArticle, Summary, Tweet}};
+use std::{path::Display, string::ToString};
+
 trait ContainerAnnotation<'a> {
     type ItemIterator: Iterator<Item = &'a u8>;
     fn items(&'a self) -> Self::ItemIterator;
@@ -12,10 +14,10 @@ pub fn notify(item: &impl Summary) {
 pub fn notify_generic<T: Summary>(item: &T) {
     println!("Breaking news ! {}", item.summarize());
 }
-/*
-pub fn notify_generic<T: Summary>(item1: &T, item2: &T) {
-    println!("Breaking news ! {}", item.summarize());
-}*/
+
+// pub fn notify_generic<T: Summary>(item1: &T, item2: &T) {
+//     println!("Breaking news ! {}", item.summarize());
+// }
 pub fn returns_summarize() -> impl Summary {
     Tweet {
         username: String::from("Tweet Name"),
@@ -25,13 +27,32 @@ pub fn returns_summarize() -> impl Summary {
     }
 }
 
+
+// TODO - check out how to use this one properly.
+pub trait AllTrait {
+    fn use_self(self);
+    fn use_immutable(&self);
+    fn use_mutable(&mut self);
+    // fn use_self_for(self: Self);
+    // fn use_immutable(self: &Self);
+    // fn use_mutable(self: &mut Self);
+
+    // type AssociatedType;
+    // fn check_associated(arg: Self::AssociatedType);
+}
+
+
 fn main() {
+    let num_string = 5.to_string();
+    let five = ToString::to_string(&5); // called by namespaced by the trait.
+
     let movie1 = Movie {
         title: "Titanic".to_string(),
         director: "James Cameron".to_string(),
         release_year: 1997,
         genre: "historical".to_string(),
     };
+    println!("{}", movie1); // Using Display Trait.
     println!("{}", movie1.description());
     println!(
         "The movie was released {} years ago.",
